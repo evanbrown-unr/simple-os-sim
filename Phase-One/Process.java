@@ -9,17 +9,31 @@ class Process
 {
     public enum OperationType
     {
-        SYSTEM,
-        APP,
-        PROCESS,
-        INPUT,
-        OUTPUT
+        SYSTEM(0),
+        APP(1),
+        PROCESS(2),
+        INPUT(3),
+        OUTPUT(4);
+
+        public final int value;
+
+        OperationType(int value)
+        {
+            this.value = value;
+        }
     }
 
     public enum Status
     {
-        SUCCESS,
-        FAILED
+        SUCCESS(0),
+        FAILURE(1);
+
+        public final int value;
+
+        Status(int value)
+        {
+            this.value = value;
+        }
     }
 
     public class Operation
