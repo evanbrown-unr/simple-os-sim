@@ -24,6 +24,9 @@ public class Logger
         buffer = new StringBuffer();
     }
 
+    /**
+     * \brief Initializes the class.
+     */
     public static void init(boolean newPrintDebug, boolean newToFile,
                             boolean newToConsole, String newFilePath)
     {
@@ -33,6 +36,12 @@ public class Logger
         filePath = newFilePath;
     }
 
+    /**
+     * \brief Logs the current elapsed time and a message.
+     * \details It gets sent to either the console, the file,
+     *          both, or neither.
+     * \param msg String that gets sent through.
+     */
     public static void log(String msg)
     {
         if (toConsole)

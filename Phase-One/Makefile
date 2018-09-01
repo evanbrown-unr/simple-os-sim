@@ -9,7 +9,7 @@ CLASSES = \
         OperatingSystem.java \
         Configuration.java \
         Logger.java \
-        ProcessControlBlock.java \
+        Process.java \
         BasicTimer.java \
 
 default: classes

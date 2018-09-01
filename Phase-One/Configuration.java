@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Configuration
 {
@@ -58,7 +59,9 @@ public class Configuration
 
     private Configuration()
     {
-
+        version = new String();
+        mdfPath = new String();
+        logFilePath = new String();
     }
 
     private Configuration(String configFilePath) throws FileNotFoundException
@@ -96,7 +99,15 @@ public class Configuration
         }
     }
 
-
+    /**
+     * \brief Helper method to return integer options.
+     * \details Theres no way to return both objects, so
+     *          I created two functions for retrieving option
+     *          data: one for integers, one for strings.
+     * \param opt: An instance of the enum Option.
+     * \return Integer value that corresponds to the case
+     *         labels name.
+     */
     public static int getIntOption(Option opt)
     {
         switch (opt)
@@ -127,10 +138,12 @@ public class Configuration
     public static void readConfigFile(String configFilePath) throws FileNotFoundException
     {
         FileInputStream configFile = new FileInputStream(configFilePath);
+        Scanner sc = new Scanner(configFile);
     }
 
     public static String getNextOption(FileInputStream ifstream, String option)
     {
+        Scanner sc = new Scanner(ifstream);
         return new String();
     }
 }

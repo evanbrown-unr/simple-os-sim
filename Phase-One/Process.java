@@ -1,5 +1,6 @@
 /**
  * Module for handling operations in the OS simulation.
+ * Done writing, has not been debugged.
  */
 
 import java.util.LinkedList;
@@ -13,8 +14,7 @@ class ProcessControlBlock
     /**
      * \brief Enumeration to abstract operation types.
      */
-    public enum OperationType
-    {
+    public enum OperationType    {
         SYSTEM(0),
         APP(1),
         PROCESS(2),
@@ -57,6 +57,34 @@ class ProcessControlBlock
         Operation()
         {
             operationName = new String();
+        }
+
+        /**
+         * \brief Returns object's type as a string.
+         * \return Type in string format.
+         */
+        String typeToString()
+        {
+            switch (type)
+            {
+                case SYSTEM:
+                    return "system";
+
+                case APP:
+                    return "app";
+
+                case PROCESS:
+                    return "process";
+
+                case INPUT:
+                    return "input";
+
+                case OUTPUT:
+                    return "output";
+
+                default:
+                    return "no type";
+            }
         }
     }
 
@@ -151,11 +179,25 @@ class ProcessControlBlock
     }
 
     /**
-     * /brief Processes operation in front of queue, then
-     *        removes from queue.
+     * \brief Processes operation in front of queue.
+     * \details Loops for required amount of cycles and
+     *          then waits for the required amount of time
+     *          for cycle. The logger outputs both
+     *
      */
     public final void executeOperation(Operation op)
     {
+        BasicTimer tempTimer = new BasicTimer();
 
+        Logger.log(processName + ": start " + op.operationName + " " + op.typeToString());
+
+        for (int i = 0; i < op.numCycles; ++i)
+        {
+            tempTimer.start();
+
+            while (tempTimer.getElapsedTime() < getCycleTime(op.operationName));
+        }
+
+        Logger.log(processName + ": end " + op.operationName + " " + op.typeToString());
     }
 }
