@@ -21,7 +21,7 @@ public class Configuration
         HARD_DRIVE_TIME(4),
         PRINTER_TIME(5),
         KEYBOARD_TIME(6),
-        LOG(7),
+        LOG_TYPE(7),
         LOG_FILE_PATH(8);
 
         public final int value;
@@ -51,21 +51,33 @@ public class Configuration
                       hardDriveTime,
                       printerTime,
                       keyboardTime;
+    public static LogType logType;
     public static String version,
                          mdfPath,
                          logFilePath;
-    public static LogType logType;
 
-    Configuration()
+    private Configuration()
+    {
+
+    }
+
+    private Configuration(String configFilePath) throws FileNotFoundException
     {
         version = new String();
         mdfPath = new String();
         logFilePath = new String();
+        readConfigFile(configFilePath);
     }
 
-    Configuration(String configFilePath)
-    {}
-
+    /**
+     * \brief Helper method to return string options.
+     * \details Theres no way to return both objects, so
+     *          I created two functions for retrieving option
+     *          data: one for integers, one for strings.
+     * \param opt: An instance of the enum Option.
+     * \return String value that corresponds to the case
+     *         labels name.
+     */
     public static String getStringOption(Option opt)
     {
         switch (opt)
@@ -83,6 +95,7 @@ public class Configuration
                 return "Option is not a valid string";
         }
     }
+
 
     public static int getIntOption(Option opt)
     {
@@ -103,7 +116,7 @@ public class Configuration
             case KEYBOARD_TIME:
                 return keyboardTime;
 
-            case LOG:
+            case LOG_TYPE:
                 return logType.value;
 
             default:
@@ -111,8 +124,10 @@ public class Configuration
         }
     }
 
-    public static void readConfigFile(String configFilePath)
-    {}
+    public static void readConfigFile(String configFilePath) throws FileNotFoundException
+    {
+        FileInputStream configFile = new FileInputStream(configFilePath);
+    }
 
     public static String getNextOption(FileInputStream ifstream, String option)
     {
