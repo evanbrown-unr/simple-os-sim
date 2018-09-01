@@ -2,11 +2,13 @@
  * Main class for the OS simulation.
  */
 
+import java.io.FileNotFoundException;
+
 class OSSim
 {
     private static final int REQUIRED_ARGS = 2;
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws FileNotFoundException
     {
         if (args.length != REQUIRED_ARGS)
         {
@@ -16,5 +18,6 @@ class OSSim
         }
 
         OperatingSystem os = new OperatingSystem(); // create OS object
+        Configuration.readConfigFile(args[0]);
     }
 }
