@@ -16,8 +16,9 @@ class OSSim
             System.err.println("Exiting with return code 1");
             System.exit(1);
         }
-
-        OperatingSystem os = new OperatingSystem(); // create OS object
+        // create OS object
+        OperatingSystem os = new OperatingSystem();
         Configuration.readConfigFile(args[0]);
+        Logger.init();
     }
 }

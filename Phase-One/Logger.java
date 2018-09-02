@@ -12,28 +12,25 @@ import java.lang.StringBuffer;
 public class Logger
 {
     public static BasicTimer timer;
-    public static boolean printDebug,
-                          toConsole,
+    public static boolean toConsole,
                           toFile;
     public static String filePath;
     private static StringBuffer buffer;
 
-    private Logger()
-    {
-        filePath = new String();
-        buffer = new StringBuffer();
-    }
-
     /**
      * \brief Initializes the class.
+     * \details Since this class is never instantiate, there is no constructor.
+     *          Therefore, this method must be called before the logger is used.
+     *          This allcates memory to the required objects and sets the configuration.
      */
-    public static void init(boolean newPrintDebug, boolean newToFile,
-                            boolean newToConsole, String newFilePath)
+    public static void init(boolean newToFile, boolean newToConsole, String newFilePath)
     {
-        printDebug = newPrintDebug;
+        timer = new BasicTimer();
+        buffer = new StringBuffer();
+        filePath = new String(newFilePath);
         toFile = newToFile;
         toConsole = newToConsole;
-        filePath = newFilePath;
+
     }
 
     /**
@@ -45,15 +42,18 @@ public class Logger
     public static void log(String msg)
     {
         if (toConsole)
-            System.out.println(timer.getElapsedTime() + " - " + msg);
+            System.out.println(timer.getElapsedTime() + " (msec) - " + msg);
 
         // need a new line
         if (toFile)
-            buffer.append(timer.getElapsedTime() + " - " + msg + "\n");
-
-
+            buffer.append(timer.getElapsedTime()+ " (msec) - " + msg + "\n");
     }
 
+    /**
+     * \brief Used to flush the string buffer to the specified logFile
+     * \details The buffer must be converted to bytes before writing
+     *          data to the file.
+     */
     public static void writeToFile() throws FileNotFoundException, IOException
     {
         FileOutputStream outputFile = new FileOutputStream(filePath);
@@ -62,9 +62,14 @@ public class Logger
         outputFile.close();
     }
 
-    public static void logError(String errMsg)
+    /**
+     * \brief Used to log any error that might occur throughout the simulation.
+     * \details Flushes to file and exits the program.
+     */
+    public static void logError(String errMsg) throws FileNotFoundException, IOException
     {
-        System.err.println("Error: " + errMsg + "\nExiting with return code 1");
+        log("Error: " + errMsg + "\nExiting with return code 1");
+        writeToFile();
         System.exit(1);
     }
 }

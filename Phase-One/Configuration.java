@@ -34,6 +34,7 @@ public class Configuration
     }
 
     public enum LogType
+
     {
         MONITOR(0),
         FILE(1),
@@ -57,14 +58,13 @@ public class Configuration
                          mdfPath,
                          logFilePath;
 
-    private Configuration()
-    {
-        version = new String();
-        mdfPath = new String();
-        logFilePath = new String();
-    }
-
-    private Configuration(String configFilePath) throws FileNotFoundException
+    /**
+     * \brief Initializes the configuration settings and reads the config file.
+     * \details Since there is no constructor for this class, this method
+     *          must be called before using any of its functionalities.
+     * \param configFilePath The file path for the configuration file.
+     */
+    public static void init(String configFilePath) throws FileNotFoundException
     {
         version = new String();
         mdfPath = new String();
@@ -135,15 +135,11 @@ public class Configuration
         }
     }
 
-    public static void readConfigFile(String configFilePath) throws FileNotFoundException
+    public static boolean readConfigFile(String configFilePath) throws FileNotFoundException
     {
         FileInputStream configFile = new FileInputStream(configFilePath);
-        Scanner sc = new Scanner(configFile);
     }
 
-    public static String getNextOption(FileInputStream ifstream, String option)
-    {
-        Scanner sc = new Scanner(ifstream);
-        return new String();
-    }
+    public static void getNextOption(Scanner lineScan, String currentLine)
+    {}
 }
