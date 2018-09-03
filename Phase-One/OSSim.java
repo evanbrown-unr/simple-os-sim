@@ -18,7 +18,6 @@ class OSSim
         }
         // create OS object
         OperatingSystem os = new OperatingSystem();
-        Configuration.readConfigFile(args[0]);
-        Logger.init();
+        Configuration.init(args[0]);
     }
 }

@@ -2,6 +2,6 @@
 
 class OperatingSystem
 {
-    OperationSystem()
+    OperatingSystem()
     {}
 }
