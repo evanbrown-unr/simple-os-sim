@@ -14,7 +14,8 @@ class ProcessControlBlock
     /**
      * \brief Enumeration to abstract operation types.
      */
-    public enum OperationType    {
+    public enum OperationType
+    {
         SYSTEM(0),
         APP(1),
         PROCESS(2),
@@ -191,12 +192,10 @@ class ProcessControlBlock
 
         Logger.log(processName + ": start " + op.operationName + " " + op.typeToString());
 
+        tempTimer.start(); // start local timer
+        // for each number of cycles wait for required time
         for (int i = 0; i < op.numCycles; ++i)
-        {
-            tempTimer.start();
-
             while (tempTimer.getElapsedTime() < getCycleTime(op.operationName));
-        }
 
         Logger.log(processName + ": end " + op.operationName + " " + op.typeToString());
     }
