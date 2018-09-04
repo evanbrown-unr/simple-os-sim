@@ -11,9 +11,9 @@ import java.lang.StringBuffer;
 
 public class Logger
 {
-    public static BasicTimer timer;
     public static boolean toConsole,
                           toFile;
+    private static BasicTimer timer;
     public static String filePath;
     private static StringBuffer buffer;
 
@@ -34,6 +34,14 @@ public class Logger
     }
 
     /**
+     * \brief Function to wrap the timer's functionality.
+     */
+    public static void startLogTimer()
+    {
+        timer.start();
+    }
+
+    /**
      * \brief Logs the current elapsed time and a message.
      * \details It gets sent to either the console, the file,
      *          both, or neither.
@@ -46,7 +54,7 @@ public class Logger
 
         // need a new line
         if (toFile)
-            buffer.append(timer.getElapsedTime()+ " (msec) - " + msg + "\n");
+            buffer.append(timer.getElapsedTime() + " (msec) - " + msg + "\n");
     }
 
     /**

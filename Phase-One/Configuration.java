@@ -16,7 +16,10 @@ import java.util.Scanner;
 
 public class Configuration
 {
-    public enum Option
+    /**
+     * \brief Enumeration to represent the different config options.
+     */
+    public static enum Option
     {
         VERSION(0),
         MDF_PATH(1),
@@ -36,7 +39,7 @@ public class Configuration
         }
     }
 
-    public enum LogType
+    public static enum LogType
 
     {
         MONITOR(0),

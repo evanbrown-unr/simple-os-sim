@@ -4,17 +4,16 @@
  */
 
 import java.util.LinkedList;
-import java.util.Queue;
 import java.lang.Thread;
 import java.lang.Runnable;
 import java.lang.InterruptedException;
 
-class ProcessControlBlock
+class Process
 {
     /**
      * \brief Enumeration to abstract operation types.
      */
-    public enum OperationType
+    public static enum OperationType
     {
         SYSTEM(0),
         APP(1),
@@ -33,7 +32,7 @@ class ProcessControlBlock
     /**
      * \brief Enumeration to abstract status codes;
      */
-    public enum Status
+    public static enum Status
     {
         SUCCESS(0),
         FAILURE(1);
@@ -49,7 +48,7 @@ class ProcessControlBlock
     /**
      * \brief Class to abstract a primitive operation;
      */
-    public class Operation
+    public static class Operation
     {
         public OperationType type; ///< type of operation to perform
         public String operationName; ///< name of process
@@ -91,7 +90,7 @@ class ProcessControlBlock
 
     /* Class instance variables */
     private String processName = new String();
-    private Queue<Operation> operationsQueue;
+    private LinkedList<Operation> operationsQueue;
 
     /**
      * \brief ProcessControlBloack constructor
@@ -99,16 +98,12 @@ class ProcessControlBlock
      *          is null, then it is allocated in the
      *          constructor.
      * \param processName Name of new process.
-     * \param operationsQueue Queue of all operations
+     * \param operationsQueue LinkedList of all operations
      */
-    ProcessControlBlock(String processName, LinkedList<Operation> operationsQueue)
+    Process(String processName, LinkedList<Operation> operationsQueue)
     {
         this.processName = processName;
-
-        if (operationsQueue != null)
-            this.operationsQueue = operationsQueue;
-        else
-            this.operationsQueue = new LinkedList<Operation>();
+        this.operationsQueue = new LinkedList<Operation>(operationsQueue);
     }
 
     public Status run() throws InterruptedException
@@ -141,11 +136,17 @@ class ProcessControlBlock
         return Status.SUCCESS;
     }
 
+    /**
+     * \breif Getter for the process name.
+     */
     public String getName()
     {
         return processName;
     }
 
+    /**
+     * \brief Getter for the process cycle time.
+     */
     public int getCycleTime(String opName)
     {
         switch (opName)
@@ -171,7 +172,7 @@ class ProcessControlBlock
     }
 
     /**
-     * /brief Adds operation to the end of queue.
+     * /brief Adds operation to the end of LinkedList.
      * /param op New operation.
      */
     public void enqueueOperation(Operation op)
@@ -180,7 +181,7 @@ class ProcessControlBlock
     }
 
     /**
-     * \brief Processes operation in front of queue.
+     * \brief Processes operation in front of LinkedList.
      * \details Loops for required amount of cycles and
      *          then waits for the required amount of time
      *          for cycle. The logger outputs both
