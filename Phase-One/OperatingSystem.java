@@ -86,12 +86,11 @@ class OperatingSystem
             {
                 if (operationBuff.operationName.contains("begin"))
                 {
-                    currProcess = new Process("Process " + Integer.toString(processCount),
-                                              currOperationsQueue);
+                    ++processCount;
+                    String buff = Integer.toString(processCount);
+                    currProcess = new Process("Process " + processCount);
                     readyQueue.add(currProcess);
                 }
-                else if (operationBuff.operationName == "finish")
-                    processCount += 1;
             }
 
             // adding operations to current app process

@@ -107,6 +107,7 @@ class Process
     }
 
     /* Class instance variables */
+    private int processNumber;
     private String processName = new String();
     private LinkedList<Operation> operationsQueue;
 
@@ -118,10 +119,17 @@ class Process
      * \param processName Name of new process.
      * \param operationsQueue LinkedList of all operations
      */
-    Process(String processName, LinkedList<Operation> operationsQueue)
+    Process(String processName)
     {
         this.processName = processName;
-        this.operationsQueue = new LinkedList<Operation>(operationsQueue);
+        operationsQueue = new LinkedList<Operation>();
+    }
+
+    Process(String processName, int processNumber)
+    {
+        this.processName = processName;
+        this.processNumber = processNumber;
+        operationsQueue = new LinkedList<Operation>();
     }
 
     public Status run() throws InterruptedException
