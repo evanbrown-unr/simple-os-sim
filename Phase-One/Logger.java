@@ -11,7 +11,7 @@ import java.lang.StringBuffer;
 
 public class Logger
 {
-    public static boolean toConsole,
+    public static boolean toMonitor,
                           toFile;
     private static BasicTimer timer;
     public static String filePath;
@@ -22,15 +22,31 @@ public class Logger
      * \details Since this class is never instantiate, there is no constructor.
      *          Therefore, this method must be called before the logger is used.
      *          This allcates memory to the required objects and sets the configuration.
+     *          This classes initialization depends upon the Configuration's initialization.
      */
-    public static void init(boolean newToFile, boolean newToConsole, String newFilePath)
+    public static void init() throws FileNotFoundException, IOException
     {
         timer = new BasicTimer();
         buffer = new StringBuffer();
-        filePath = new String(newFilePath);
-        toFile = newToFile;
-        toConsole = newToConsole;
+        filePath = new String(Configuration.logFilePath);
 
+        if (Configuration.logType == Configuration.LogType.MONITOR)
+        {
+            toMonitor = false;
+            toFile = true;
+        }
+        else if (Configuration.logType == Configuration.LogType.FILE)
+        {
+            toMonitor = true;
+            toFile = false;
+        }
+        else if (Configuration.logType == Configuration.LogType.BOTH)
+        {
+            toMonitor = true;
+            toFile = true;
+        }
+        else
+            logError("Log type not specified");
     }
 
     /**
@@ -49,7 +65,7 @@ public class Logger
      */
     public static void log(String msg)
     {
-        if (toConsole)
+        if (toMonitor)
             System.out.println(timer.getElapsedTime() + " (msec) - " + msg);
 
         // need a new line

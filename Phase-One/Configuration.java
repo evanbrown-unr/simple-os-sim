@@ -28,8 +28,11 @@ public class Configuration
         HARD_DRIVE_TIME(4),
         PRINTER_TIME(5),
         KEYBOARD_TIME(6),
-        LOG_TYPE(7),
-        LOG_FILE_PATH(8);
+        SCANNER_TIME(7),
+        PROJECTOR_TIME(8),
+        MEMORY_TIME(9),
+        LOG_TYPE(10),
+        LOG_FILE_PATH(11);
 
         public final int value;
 
@@ -57,8 +60,10 @@ public class Configuration
     public static int processorTime,
                       monitorTime,
                       hardDriveTime,
-                      printerTime,
-                      keyboardTime;
+                      keyboardTime,
+                      scannerTime,
+                      projectorTime,
+                      memoryTime;
     public static LogType logType;
     public static String version,
                          mdfPath,
@@ -127,11 +132,17 @@ public class Configuration
             case HARD_DRIVE_TIME:
                 return hardDriveTime;
 
-            case PRINTER_TIME:
-                return printerTime;
-
             case KEYBOARD_TIME:
                 return keyboardTime;
+
+            case SCANNER_TIME:
+                return scannerTime;
+
+            case PROJECTOR_TIME:
+                return projectorTime;
+
+            case MEMORY_TIME:
+                return memoryTime;
 
             case LOG_TYPE:
                 return logType.value;
@@ -158,25 +169,27 @@ public class Configuration
         mdfPath = extractOption(lineScan);
 
         // time values must be integers
-        processorTime = Integer.parseInt(extractOption(lineScan));
         monitorTime = Integer.parseInt(extractOption(lineScan));
+        processorTime = Integer.parseInt(extractOption(lineScan));
+        scannerTime = Integer.parseInt(extractOption(lineScan));
         hardDriveTime = Integer.parseInt(extractOption(lineScan));
-        printerTime = Integer.parseInt(extractOption(lineScan));
         keyboardTime = Integer.parseInt(extractOption(lineScan));
+        memoryTime = Integer.parseInt(extractOption(lineScan));
+        projectorTime = Integer.parseInt(extractOption(lineScan));
 
         // must determine log type with switch statement
-        String logTypeString = extractOption(lineScan);
+        String logTypeString = extractOption(lineScan).toLowerCase();
         logFilePath = extractOption(lineScan);
 
         switch (logTypeString)
         {
-            case "Log to Both":
+            case "log to both":
                 logType = LogType.BOTH;
                 break;
-            case "Log to Monitor":
+            case "log to monitor":
                 logType = LogType.MONITOR;
                 break;
-            case "Log to File":
+            case "log to file":
                 logType = LogType.FILE;
                 break;
             default:
@@ -192,13 +205,28 @@ public class Configuration
      *        and return the relevant data;
      * \details A lot is going on in that one line of code.
      *          First the line is read fron the scanner, then
-     *          it is split at the colon. Since there is still a
-     *          whitespace in front of the data string, it gets trimmed.
+     *          it is split at the colon. Any whitespace surrounding
+     *          the data string is trimmed.
      * \param lineScan The Scanner that is attached to the config file.
      * \returns A string containing the valid option data.
      */
     private static String extractOption(Scanner lineScan)
     {
-        return lineScan.nextLine().split(":")[1].substring(1);
+        return lineScan.nextLine().split(":")[1].trim();
+    }
+
+    public static void outputConfig()
+    {
+        System.out.println("\n\n\nVersion: " + version);
+        System.out.println("File Path: "+ mdfPath);
+        System.out.println("Monitor: "+ monitorTime);
+        System.out.println("Processor: "+ processorTime);
+        System.out.println("Scanner: "+ scannerTime);
+        System.out.println("Hard drive: "+ hardDriveTime);
+        System.out.println("Keyboard: "+ keyboardTime);
+        System.out.println("Memory: "+ memoryTime);
+        System.out.println("Projector: "+ projectorTime);
+        System.out.println("Log: " + logType);
+        System.out.println("Log file: "+ logFilePath + "\n\n");
     }
 }

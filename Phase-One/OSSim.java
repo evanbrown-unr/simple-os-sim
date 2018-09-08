@@ -9,7 +9,8 @@ class OSSim
 {
     private static final int REQUIRED_ARGS = 1;
 
-    public static void main(String[] args) throws FileNotFoundException, IOException
+    public static void main(String[] args) throws FileNotFoundException, IOException,
+                                                  InterruptedException
     {
         if (args.length != REQUIRED_ARGS)
         {
@@ -20,5 +21,9 @@ class OSSim
         // create OS object
         OperatingSystem os = new OperatingSystem();
         Configuration.init(args[0]);
+        Logger.init();
+        Configuration.outputConfig();
+        os.readMetaData();
+        os.run();
     }
 }

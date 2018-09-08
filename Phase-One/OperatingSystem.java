@@ -12,7 +12,7 @@ class OperatingSystem
     private Process.Operation startOperation,
                               endOperation;
 
-    OperatingSystem()
+    OperatingSystem() throws FileNotFoundException, IOException
     {
         readyQueue = new LinkedList<Process>();
         startOperation = new Process.Operation();
@@ -22,8 +22,8 @@ class OperatingSystem
 
     public void run() throws IOException, InterruptedException
     {
-        if (!isMetaDataLoaded)
-            Logger.logError("Meta data file has not been processed");
+        //if (!isMetaDataLoaded)
+           // Logger.logError("Meta data file has not been processed");
 
         Logger.startLogTimer();
         Logger.log("Starting OS simulation");
@@ -40,6 +40,7 @@ class OperatingSystem
         }
 
         Logger.log("Ending OS simulation");
+        Logger.writeToFile();
     }
 
     public boolean readMetaData() throws FileNotFoundException, IOException
@@ -53,20 +54,24 @@ class OperatingSystem
         Scanner metaDataScanner = new Scanner(metaDataFile).useDelimiter(";|:|\\.");
         LinkedList<Process.Operation> currOperationsQueue = new LinkedList<Process.Operation>();
         Process currProcess = null;
-        Process.Operation operationBuff = new Process.Operation();
-        Process.OperationType currType = null;
         boolean foundSystemStart = false;
-        int processCount = 0,
-            currCycles = 0;
+        int processCount = 0;
 
-        if (!metaDataScanner.next().contains("Start Program Meta-Data Code"));
-            Logger.logError("Meta data file does not contain start command");
+        if (!metaDataScanner.next().contains("Start Program"))
+            Logger.logError("Meta data file does not contain start prompt");
 
-        while (getTokens(metaDataScanner, operationBuff))
+        while (true)
         {
-            if (!foundSystemStart &&
-                operationBuff.type != Process.OperationType.SYSTEM &&
-                operationBuff.operationName == "start")
+            Process.Operation operationBuff = getTokens(metaDataScanner);
+            if (operationBuff == null) break;
+
+            System.out.println("\n");
+            operationBuff.showFields();
+            System.out.println("\n");
+
+            if ((!foundSystemStart) &&
+                (operationBuff.type == Process.OperationType.SYSTEM) &&
+                (operationBuff.operationName.contains("begin")))
             {
                 startOperation = operationBuff;
                 foundSystemStart = true;
@@ -79,17 +84,17 @@ class OperatingSystem
             // creating/ending app
             if (operationBuff.type == Process.OperationType.APP)
             {
-                if (operationBuff.operationName == "start")
+                if (operationBuff.operationName.contains("begin"))
                 {
                     currProcess = new Process("Process " + Integer.toString(processCount),
                                               currOperationsQueue);
                     readyQueue.add(currProcess);
                 }
-                else if (operationBuff.operationName == "end")
-                    ++processCount;
+                else if (operationBuff.operationName == "finish")
+                    processCount += 1;
             }
 
-            // addomg operations to current app process
+            // adding operations to current app process
             else
             {
                 if (currProcess == null || currOperationsQueue == null)
@@ -112,18 +117,21 @@ class OperatingSystem
      *          in order to store the respective tokens.
      * \param metaDataScanner Scanner that's tied to the meta data file.
      * \param op The operation object that will store the extracted tokens.
-     * \return True if more operations exist, else false.
+     * \return The operation with fields set to extracted metadata.
+               If the end of the file has been reached, then returns null.
      */
-    private boolean getTokens(Scanner metaDataScanner, Process.Operation op)
+    private Process.Operation getTokens(Scanner metaDataScanner)
     {
-        metaDataScanner.useDelimiter(";|\\.");
         String jobString = metaDataScanner.next();
-        if (jobString.contains("End Program Meta-Data Code")) return false;
-        String[] tokens = jobString.split("\\(|\\)");
-        op.type = tokenToType(tokens[0]);
-        op.operationName = tokens[1];
-        op.numCycles = Integer.parseInt(tokens[2]);
-        return true;
+        if (jobString.contains("End Program")) return null;
+        String[] tokens = jobString.split("\\{|\\}");
+        for (String s : tokens) s.trim();
+        return new Process.Operation(tokenToType(tokens[0]), tokens[1],
+                                     Integer.parseInt(tokens[2]));
+        //op.type = tokenToType(tokens[0]);
+        //op.operationName = tokens[1];
+        //op.numCycles = Integer.parseInt(tokens[2]);
+        //return op;
     }
 
     private Process.OperationType tokenToType(String token)
@@ -138,6 +146,8 @@ class OperatingSystem
             return Process.OperationType.INPUT;
         if (token.contains("O"))
             return Process.OperationType.OUTPUT;
+        if (token.contains("M"))
+            return Process.OperationType.MEMORY;
         return Process.OperationType.PROCESS;
     }
 }

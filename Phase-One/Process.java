@@ -19,7 +19,8 @@ class Process
         APP(1),
         PROCESS(2),
         INPUT(3),
-        OUTPUT(4);
+        OUTPUT(4),
+        MEMORY(5);
 
         public final int value;
 
@@ -51,12 +52,26 @@ class Process
     public static class Operation
     {
         public OperationType type; ///< type of operation to perform
-        public String operationName; ///< name of process
+        public String operationName; ///< name of operation
         public int numCycles; ///< amount of cycles to perform
 
         Operation()
         {
             operationName = new String();
+        }
+
+        Operation(OperationType type, String operationName, int numCycles)
+        {
+            this.type = type;
+            this.operationName = operationName;
+            this.numCycles = numCycles;
+        }
+
+        public void showFields()
+        {
+            System.out.println("Type: " + type);
+            System.out.println("Name: " + operationName);
+            System.out.println("Cycles: "+ numCycles);
         }
 
         /**
@@ -81,6 +96,9 @@ class Process
 
                 case OUTPUT:
                     return "output";
+
+                case MEMORY:
+                    return "memory";
 
                 default:
                     return "no type";
@@ -193,10 +211,12 @@ class Process
 
         Logger.log(processName + ": start " + op.operationName + " " + op.typeToString());
 
-        tempTimer.start(); // start local timer
         // for each number of cycles wait for required time
         for (int i = 0; i < op.numCycles; ++i)
+        {
+            tempTimer.start(); // start local time
             while (tempTimer.getElapsedTime() < getCycleTime(op.operationName));
+        }
 
         Logger.log(processName + ": end " + op.operationName + " " + op.typeToString());
     }

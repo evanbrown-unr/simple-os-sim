@@ -1,0 +1,52 @@
+26 (msec) - Starting OS simulation
+53 (msec) - OS: starting Process 0
+103 (msec) - Process 0: start run process
+214 (msec) - Process 0: end run process
+215 (msec) - Process 0: start allocate memory
+216 (msec) - Process 0: end allocate memory
+218 (msec) - Process 0: start monitor output
+358 (msec) - Process 0: end monitor output
+359 (msec) - Process 0: start hard drive input
+479 (msec) - Process 0: end hard drive input
+480 (msec) - Process 0: start projector output
+481 (msec) - Process 0: end projector output
+482 (msec) - OS: exiting Process 0
+483 (msec) - OS: starting Process 0
+484 (msec) - Process 0: start allocate memory
+484 (msec) - Process 0: end allocate memory
+485 (msec) - Process 0: start projector output
+486 (msec) - Process 0: end projector output
+487 (msec) - Process 0: start allocate memory
+487 (msec) - Process 0: end allocate memory
+488 (msec) - Process 0: start hard drive input
+593 (msec) - Process 0: end hard drive input
+594 (msec) - Process 0: start hard drive output
+624 (msec) - Process 0: end hard drive output
+625 (msec) - Process 0: start hard drive output
+865 (msec) - Process 0: end hard drive output
+866 (msec) - Process 0: start allocate memory
+866 (msec) - Process 0: end allocate memory
+867 (msec) - Process 0: start run process
+927 (msec) - Process 0: end run process
+928 (msec) - Process 0: start projector output
+929 (msec) - Process 0: end projector output
+929 (msec) - OS: exiting Process 0
+930 (msec) - OS: starting Process 0
+931 (msec) - Process 0: start block memory
+931 (msec) - Process 0: end block memory
+932 (msec) - Process 0: start keyboard input
+1782 (msec) - Process 0: end keyboard input
+1783 (msec) - Process 0: start block memory
+1783 (msec) - Process 0: end block memory
+1784 (msec) - Process 0: start run process
+1834 (msec) - Process 0: end run process
+1835 (msec) - Process 0: start run process
+1885 (msec) - Process 0: end run process
+1886 (msec) - Process 0: start hard drive output
+1976 (msec) - Process 0: end hard drive output
+1978 (msec) - Process 0: start run process
+2158 (msec) - Process 0: end run process
+2159 (msec) - Process 0: start finish system
+2159 (msec) - Process 0: end finish system
+2160 (msec) - OS: exiting Process 0
+2161 (msec) - Ending OS simulation
