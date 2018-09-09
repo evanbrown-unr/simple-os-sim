@@ -13,6 +13,9 @@ class BasicTimer
     protected long stopTime;
     protected boolean isRunning;
 
+    /**
+     * \brief Timer constructor.
+     */
     BasicTimer()
     {
         startTime = 0;
@@ -20,12 +23,18 @@ class BasicTimer
         isRunning = false;
     }
 
+    /**
+     * \brief Starts the timer
+     */
     public void start()
     {
         startTime = System.currentTimeMillis();
         isRunning = true;
     }
 
+    /**
+     * \brief Stops the timer.
+     */
     public void stop()
     {
         if (isRunning)
@@ -35,6 +44,11 @@ class BasicTimer
         }
     }
 
+    /**
+     * \brief Gives the amount of time elapsed since started (msec).
+     * \detials If the timer hasn't been stopped then it performs calculation
+     *          based off of that moment.
+     */
     public int getElapsedTime()
     {
         if (isRunning)

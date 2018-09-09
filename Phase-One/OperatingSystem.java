@@ -12,16 +12,20 @@ import java.lang.InterruptedException;
 
 class OperatingSystem
 {
-    private LinkedList<Process> readyQueue;
+    /* Class instance variables */
+    private LinkedList<ProcessControlBlock> readyQueue;
     private boolean isMetaDataLoaded;
-    private Process.Operation startOperation,
-                              endOperation;
+    private final Operation startOperation = new Operation(OperationType.SYSTEM, "begin", 0),
+                            endOperation = new Operation(OperationType.SYSTEM, "finish", 0);
 
+    /**
+     * \brief Class constructor.
+     * \details The meta data is read upon creation.
+     *          The status flag is stored in an instance variable.
+     */
     OperatingSystem() throws FileNotFoundException, IOException
     {
-        readyQueue = new LinkedList<Process>();
-        startOperation = new Process.Operation();
-        endOperation = new Process.Operation();
+        readyQueue = new LinkedList<ProcessControlBlock>();
         isMetaDataLoaded = readMetaData();
     }
 
@@ -37,20 +41,20 @@ class OperatingSystem
             Logger.logError("Meta data file has not been processed");
 
         Logger.startLogTimer();
-        Logger.log("Starting OS simulation");
+        Logger.log("Beginning OS simulation");
 
         while (!readyQueue.isEmpty())
         {
-            Process currProcess = readyQueue.poll();
+            ProcessControlBlock currPCB = readyQueue.poll();
 
-            Logger.log("OS: starting " + currProcess.getName());
+            Logger.log("OS: beginning " + currPCB.getName());
 
-            currProcess.run();
+            currPCB.run();
 
-            Logger.log("OS: exiting " + currProcess.getName());
+            Logger.log("OS: finishing " + currPCB.getName());
         }
 
-        Logger.log("Ending OS simulation");
+        Logger.log("Finishing OS simulation");
         Logger.writeToFile();
     }
 
@@ -62,68 +66,54 @@ class OperatingSystem
      */
     public boolean readMetaData() throws FileNotFoundException, IOException
     {
-        String filePath = Configuration.getStringOption(Configuration.Option.MDF_PATH);
+        String filePath = Configuration.getStringOption(Option.MDF_PATH);
 
         if (filePath.isEmpty())
             Logger.logError("No meta data path found");
 
         FileInputStream metaDataFile = new FileInputStream(filePath);
         Scanner metaDataScanner = new Scanner(metaDataFile).useDelimiter(";|:|\\.");
-        Process currProcess = null;
+        ProcessControlBlock currPCB = null;
         boolean foundSystemStart = false;
-        int processCount = 0;
+        int appCount = 0;
 
         if (!metaDataScanner.next().contains("Start Program"))
             Logger.logError("Meta data file does not contain start prompt");
 
         while (true)
         {
-            Process.Operation currOperation = getTokens(metaDataScanner);
+            Operation currOperation = getTokens(metaDataScanner);
 
-            if (currOperation == null) break;
+            // Found system finish operation
+            if (currOperation.equals(endOperation))
+                break;
 
-            // Handle system process
-            if (currOperation.type == Process.OperationType.SYSTEM)
-            {
-                // Verify system begin operation
-                if (!foundSystemStart &&
-                    currOperation.name.contains("begin"))
-                {
-                    startOperation = currOperation;
-                    foundSystemStart = true;
-                }
-
-                // Verify system end operation
-                else if (foundSystemStart &&
-                         currOperation.name.contains("finish"))
-                {
-                    endOperation = currOperation;
-                    break;
-                }
-            }
+            // Found system begin operation
+            else if (currOperation.equals(startOperation))
+                foundSystemStart = true;
 
             // System begin operation does not exist
             else if (!foundSystemStart)
                 Logger.logError("Missing OS system start opertation");
 
             // Handling application processes
-            else if (currOperation.type == Process.OperationType.APP)
+            else if (currOperation.type == OperationType.APP)
             {
                 if (currOperation.name.contains("begin"))
                 {
-                    currProcess = new Process("Process " + Integer.toString(processCount));
-                    readyQueue.add(currProcess);
-                    ++processCount;
+                    currPCB = new ProcessControlBlock("Process " + Integer.toString(appCount));
+                    readyQueue.add(currPCB);
+                    ++appCount;
                 }
             }
 
             // Add operation to current application
             else
             {
-                if (currProcess == null)
+                if (currPCB == null)
                     Logger.logError("No application created for current operations");
 
-                currProcess.addOperation(currOperation);
+                currPCB.addOperation(currOperation);
             }
         }
 
@@ -143,30 +133,37 @@ class OperatingSystem
      * \return The operation with fields set to extracted metadata.
                If the end of the file has been reached, then returns null.
      */
-    private Process.Operation getTokens(Scanner metaDataScanner)
+    private Operation getTokens(Scanner metaDataScanner) throws FileNotFoundException, IOException
     {
         String jobString = metaDataScanner.next();
         if (jobString.contains("End Program")) return null;
         String[] tokens = jobString.split("\\{|\\}");
         for (String s : tokens) s.trim();
-        return new Process.Operation(tokenToType(tokens[0]), tokens[1],
-                                     Integer.parseInt(tokens[2]));
+        return new Operation(tokenToType(tokens[0]), tokens[1],
+                             Integer.parseInt(tokens[2]));
     }
 
-    private Process.OperationType tokenToType(String token)
+    /**
+     * \brief Converts valid token string to operation type.
+     * \token Valid token string.
+     * \return The type of operation represented by token.
+     */
+    private OperationType tokenToType(String token) throws FileNotFoundException, IOException
     {
         if (token.contains("S"))
-            return Process.OperationType.SYSTEM;
+            return OperationType.SYSTEM;
         if (token.contains("A"))
-            return Process.OperationType.APP;
+            return OperationType.APP;
         if (token.contains("P"))
-            return Process.OperationType.PROCESS;
+            return OperationType.PROCESS;
         if (token.contains("I"))
-            return Process.OperationType.INPUT;
+            return OperationType.INPUT;
         if (token.contains("O"))
-            return Process.OperationType.OUTPUT;
+            return OperationType.OUTPUT;
         if (token.contains("M"))
-            return Process.OperationType.MEMORY;
-        return Process.OperationType.PROCESS;
+            return OperationType.MEMORY;
+
+        Logger.logError("Token does not represent valid type");
+        return null;
     }
 }

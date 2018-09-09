@@ -14,52 +14,52 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * \brief Enumeration to represent the different config options.
+ */
+enum Option
+{
+    VERSION(0),
+    MDF_PATH(1),
+    PROCESS_TIME(2),
+    MONITOR_TIME(3),
+    HARD_DRIVE_TIME(4),
+    KEYBOARD_TIME(5),
+    SCANNER_TIME(6),
+    PROJECTOR_TIME(7),
+    MEMORY_TIME(8),
+    LOG_TYPE(9),
+    LOG_FILE_PATH(10);
+
+    public final int value;
+
+    Option(int value)
+    {
+        this.value = value;
+    }
+}
+
+/**
+ * \brief Enumeration to represent log type outputs.
+ */
+enum LogType
+{
+    MONITOR(0),
+    FILE(1),
+    BOTH(2);
+
+    public final int value;
+
+    LogType(int value)
+    {
+        this.value = value;
+    }
+}
+
+
+
 public class Configuration
 {
-    /**
-     * \brief Enumeration to represent the different config options.
-     */
-    public static enum Option
-    {
-        VERSION(0),
-        MDF_PATH(1),
-        PROCESS_TIME(2),
-        MONITOR_TIME(3),
-        HARD_DRIVE_TIME(4),
-        PRINTER_TIME(5),
-        KEYBOARD_TIME(6),
-        SCANNER_TIME(7),
-        PROJECTOR_TIME(8),
-        MEMORY_TIME(9),
-        LOG_TYPE(10),
-        LOG_FILE_PATH(11);
-
-        public final int value;
-
-        Option(int value)
-        {
-            this.value = value;
-        }
-    }
-
-    /**
-     * \brief Enumeration to represent log type outputs.
-     */
-    public static enum LogType
-
-    {
-        MONITOR(0),
-        FILE(1),
-        BOTH(2);
-
-        public final int value;
-
-        LogType(int value)
-        {
-            this.value = value;
-        }
-    }
-
     public static int processorTime,
                       monitorTime,
                       hardDriveTime,
@@ -67,10 +67,10 @@ public class Configuration
                       scannerTime,
                       projectorTime,
                       memoryTime;
-    public static LogType logType;
     public static String version,
                          mdfPath,
                          logFilePath;
+    public static LogType logType;
 
     /**
      * \brief Initializes the configuration settings and reads the config file.
@@ -101,15 +101,12 @@ public class Configuration
         {
             case VERSION:
                 return version;
-
             case MDF_PATH:
                 return mdfPath;
-
             case LOG_FILE_PATH:
                 return logFilePath;
-
             default:
-                return "Option is not a valid string";
+                return null;
         }
     }
 
@@ -128,28 +125,20 @@ public class Configuration
         {
             case PROCESS_TIME:
                 return processorTime;
-
             case MONITOR_TIME:
                 return monitorTime;
-
             case HARD_DRIVE_TIME:
                 return hardDriveTime;
-
             case KEYBOARD_TIME:
                 return keyboardTime;
-
             case SCANNER_TIME:
                 return scannerTime;
-
             case PROJECTOR_TIME:
                 return projectorTime;
-
             case MEMORY_TIME:
                 return memoryTime;
-
             case LOG_TYPE:
                 return logType.value;
-
             default:
                 return -1;
         }

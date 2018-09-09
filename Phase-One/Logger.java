@@ -13,7 +13,6 @@ public class Logger
 {
     private static BasicTimer timer;
     private static StringBuffer buffer;
-
     public static boolean toMonitor,
                           toFile;
     public static String filePath;
@@ -31,17 +30,17 @@ public class Logger
         buffer = new StringBuffer();
         filePath = new String(Configuration.logFilePath);
 
-        if (Configuration.logType == Configuration.LogType.MONITOR)
+        if (Configuration.logType == LogType.MONITOR)
         {
             toMonitor = true;
             toFile = false;
         }
-        else if (Configuration.logType == Configuration.LogType.FILE)
+        else if (Configuration.logType == LogType.FILE)
         {
             toMonitor = false;
             toFile = true;
         }
-        else if (Configuration.logType == Configuration.LogType.BOTH)
+        else if (Configuration.logType == LogType.BOTH)
         {
             toMonitor = true;
             toFile = true;
