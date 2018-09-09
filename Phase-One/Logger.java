@@ -11,11 +11,12 @@ import java.lang.StringBuffer;
 
 public class Logger
 {
+    private static BasicTimer timer;
+    private static StringBuffer buffer;
+
     public static boolean toMonitor,
                           toFile;
-    private static BasicTimer timer;
     public static String filePath;
-    private static StringBuffer buffer;
 
     /**
      * \brief Initializes the class.
@@ -32,13 +33,13 @@ public class Logger
 
         if (Configuration.logType == Configuration.LogType.MONITOR)
         {
-            toMonitor = false;
-            toFile = true;
+            toMonitor = true;
+            toFile = false;
         }
         else if (Configuration.logType == Configuration.LogType.FILE)
         {
-            toMonitor = true;
-            toFile = false;
+            toMonitor = false;
+            toFile = true;
         }
         else if (Configuration.logType == Configuration.LogType.BOTH)
         {
@@ -46,7 +47,7 @@ public class Logger
             toFile = true;
         }
         else
-            logError("Log type not specified");
+            logError("Log type not defined");
     }
 
     /**
@@ -60,17 +61,20 @@ public class Logger
     /**
      * \brief Logs the current elapsed time and a message.
      * \details It gets sent to either the console, the file,
-     *          both, or neither.
+     *          both, or neither. The current elapsed time is
+     *          stored in a local int, so the file and monitor
+     *          contain the same log data.
      * \param msg String that gets sent through.
      */
     public static void log(String msg)
     {
-        if (toMonitor)
-            System.out.println(timer.getElapsedTime() + " (msec) - " + msg);
+        int elapsedTime = timer.getElapsedTime();
 
-        // need a new line
+        if (toMonitor)
+            System.out.println(elapsedTime + " (msec) - " + msg);
+
         if (toFile)
-            buffer.append(timer.getElapsedTime() + " (msec) - " + msg + "\n");
+            buffer.append(elapsedTime + " (msec) - " + msg + "\n");
     }
 
     /**
@@ -92,7 +96,7 @@ public class Logger
      */
     public static void logError(String errMsg) throws FileNotFoundException, IOException
     {
-        log("Error: " + errMsg + "\nExiting with return code 1");
+        log("ERROR: " + errMsg + "\nExiting with return code 1");
         writeToFile();
         System.exit(1);
     }

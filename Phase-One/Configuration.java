@@ -1,6 +1,6 @@
 
 /**
- * This is the configuration module of the OS simulation.
+ * Configuration module of the OS simulation.
  * It stores the current simulation settings, as well performing
  * the various operations on it. I've written the read method to
  * handle config files that are only in the shown format.
@@ -42,6 +42,9 @@ public class Configuration
         }
     }
 
+    /**
+     * \brief Enumeration to represent log type outputs.
+     */
     public static enum LogType
 
     {
@@ -161,27 +164,26 @@ public class Configuration
     private static void readConfigFile(String configFilePath) throws FileNotFoundException, IOException
     {
         FileInputStream configFile = new FileInputStream(configFilePath);
-        Scanner lineScan = new Scanner(configFile);
+        Scanner configScan = new Scanner(configFile);
 
-        lineScan.nextLine(); // ignore first line
+        configScan.nextLine(); // Ignore first line
 
-        version = extractOption(lineScan);
-        mdfPath = extractOption(lineScan);
+        version = extractOption(configScan);
+        mdfPath = extractOption(configScan);
 
-        // time values must be integers
-        monitorTime = Integer.parseInt(extractOption(lineScan));
-        processorTime = Integer.parseInt(extractOption(lineScan));
-        scannerTime = Integer.parseInt(extractOption(lineScan));
-        hardDriveTime = Integer.parseInt(extractOption(lineScan));
-        keyboardTime = Integer.parseInt(extractOption(lineScan));
-        memoryTime = Integer.parseInt(extractOption(lineScan));
-        projectorTime = Integer.parseInt(extractOption(lineScan));
+        // Time values must be integers
+        monitorTime = Integer.parseInt(extractOption(configScan));
+        processorTime = Integer.parseInt(extractOption(configScan));
+        scannerTime = Integer.parseInt(extractOption(configScan));
+        hardDriveTime = Integer.parseInt(extractOption(configScan));
+        keyboardTime = Integer.parseInt(extractOption(configScan));
+        memoryTime = Integer.parseInt(extractOption(configScan));
+        projectorTime = Integer.parseInt(extractOption(configScan));
 
-        // must determine log type with switch statement
-        String logTypeString = extractOption(lineScan).toLowerCase();
-        logFilePath = extractOption(lineScan);
+        String logTypeString = extractOption(configScan);
+        logFilePath = extractOption(configScan);
 
-        switch (logTypeString)
+        switch (logTypeString.toLowerCase())
         {
             case "log to both":
                 logType = LogType.BOTH;
@@ -193,11 +195,11 @@ public class Configuration
                 logType = LogType.FILE;
                 break;
             default:
-                Logger.logError("Failed to read log type");
+                Logger.logError("Failed to configure log type");
         }
 
         configFile.close();
-        lineScan.close();
+        configScan.close();
     }
 
     /**
@@ -207,26 +209,11 @@ public class Configuration
      *          First the line is read fron the scanner, then
      *          it is split at the colon. Any whitespace surrounding
      *          the data string is trimmed.
-     * \param lineScan The Scanner that is attached to the config file.
+     * \param configScan The Scanner that is attached to the config file.
      * \returns A string containing the valid option data.
      */
-    private static String extractOption(Scanner lineScan)
+    private static String extractOption(Scanner configScanner)
     {
-        return lineScan.nextLine().split(":")[1].trim();
-    }
-
-    public static void outputConfig()
-    {
-        System.out.println("\n\n\nVersion: " + version);
-        System.out.println("File Path: "+ mdfPath);
-        System.out.println("Monitor: "+ monitorTime);
-        System.out.println("Processor: "+ processorTime);
-        System.out.println("Scanner: "+ scannerTime);
-        System.out.println("Hard drive: "+ hardDriveTime);
-        System.out.println("Keyboard: "+ keyboardTime);
-        System.out.println("Memory: "+ memoryTime);
-        System.out.println("Projector: "+ projectorTime);
-        System.out.println("Log: " + logType);
-        System.out.println("Log file: "+ logFilePath + "\n\n");
+        return configScanner.nextLine().split(":")[1].trim();
     }
 }

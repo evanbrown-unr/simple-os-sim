@@ -1,5 +1,6 @@
 /**
  * Main class for the OS simulation.
+ * Contains main driver method for the simulation.
  */
 
 import java.io.FileNotFoundException;
@@ -18,12 +19,10 @@ class OSSim
             System.err.println("Exiting with return code 1");
             System.exit(1);
         }
-        // create OS object
-        OperatingSystem os = new OperatingSystem();
+
         Configuration.init(args[0]);
         Logger.init();
-        Configuration.outputConfig();
-        os.readMetaData();
-        os.run();
+        OperatingSystem os = new OperatingSystem();
+        os.simulate();
     }
 }

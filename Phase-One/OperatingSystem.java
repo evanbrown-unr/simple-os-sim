@@ -1,3 +1,8 @@
+/**
+ * Operating system module that wraps the functionality of the
+ * other OS modules. This drives the simulation and reads the metadata.
+ */
+
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.io.FileInputStream;
@@ -17,13 +22,19 @@ class OperatingSystem
         readyQueue = new LinkedList<Process>();
         startOperation = new Process.Operation();
         endOperation = new Process.Operation();
-        isMetaDataLoaded = false;
+        isMetaDataLoaded = readMetaData();
     }
 
-    public void run() throws IOException, InterruptedException
+    /**
+     * \brief Runs through queue of PCB.
+     * \details For this phase we are doing a simple
+     *          FCFS sheduling algorithm. This is the most
+     *          crucial part of the simulation.
+     */
+    public void simulate() throws IOException, InterruptedException
     {
-        //if (!isMetaDataLoaded)
-           // Logger.logError("Meta data file has not been processed");
+        if (!isMetaDataLoaded)
+            Logger.logError("Meta data file has not been processed");
 
         Logger.startLogTimer();
         Logger.log("Starting OS simulation");
@@ -43,6 +54,12 @@ class OperatingSystem
         Logger.writeToFile();
     }
 
+    /**
+     * \brief Loads meta data into OS environment;
+     * \details Using regular expressions, I was able to parse
+     *          the file into tokens, each one containing the data
+     *          needed to define an operation.
+     */
     public boolean readMetaData() throws FileNotFoundException, IOException
     {
         String filePath = Configuration.getStringOption(Configuration.Option.MDF_PATH);
@@ -52,7 +69,6 @@ class OperatingSystem
 
         FileInputStream metaDataFile = new FileInputStream(filePath);
         Scanner metaDataScanner = new Scanner(metaDataFile).useDelimiter(";|:|\\.");
-        LinkedList<Process.Operation> currOperationsQueue = new LinkedList<Process.Operation>();
         Process currProcess = null;
         boolean foundSystemStart = false;
         int processCount = 0;
@@ -62,44 +78,52 @@ class OperatingSystem
 
         while (true)
         {
-            Process.Operation operationBuff = getTokens(metaDataScanner);
-            if (operationBuff == null) break;
+            Process.Operation currOperation = getTokens(metaDataScanner);
 
-            System.out.println("\n");
-            operationBuff.showFields();
-            System.out.println("\n");
+            if (currOperation == null) break;
 
-            if ((!foundSystemStart) &&
-                (operationBuff.type == Process.OperationType.SYSTEM) &&
-                (operationBuff.operationName.contains("begin")))
+            // Handle system process
+            if (currOperation.type == Process.OperationType.SYSTEM)
             {
-                startOperation = operationBuff;
-                foundSystemStart = true;
-                continue;
-            }
-
-            if (!foundSystemStart)
-                Logger.logError("Missing OS system start opertation");
-
-            // creating/ending app
-            if (operationBuff.type == Process.OperationType.APP)
-            {
-                if (operationBuff.operationName.contains("begin"))
+                // Verify system begin operation
+                if (!foundSystemStart &&
+                    currOperation.name.contains("begin"))
                 {
-                    ++processCount;
-                    String buff = Integer.toString(processCount);
-                    currProcess = new Process("Process " + processCount);
-                    readyQueue.add(currProcess);
+                    startOperation = currOperation;
+                    foundSystemStart = true;
+                }
+
+                // Verify system end operation
+                else if (foundSystemStart &&
+                         currOperation.name.contains("finish"))
+                {
+                    endOperation = currOperation;
+                    break;
                 }
             }
 
-            // adding operations to current app process
+            // System begin operation does not exist
+            else if (!foundSystemStart)
+                Logger.logError("Missing OS system start opertation");
+
+            // Handling application processes
+            else if (currOperation.type == Process.OperationType.APP)
+            {
+                if (currOperation.name.contains("begin"))
+                {
+                    currProcess = new Process("Process " + Integer.toString(processCount));
+                    readyQueue.add(currProcess);
+                    ++processCount;
+                }
+            }
+
+            // Add operation to current application
             else
             {
-                if (currProcess == null || currOperationsQueue == null)
+                if (currProcess == null)
                     Logger.logError("No application created for current operations");
 
-                currProcess.enqueueOperation(operationBuff);
+                currProcess.addOperation(currOperation);
             }
         }
 
@@ -127,10 +151,6 @@ class OperatingSystem
         for (String s : tokens) s.trim();
         return new Process.Operation(tokenToType(tokens[0]), tokens[1],
                                      Integer.parseInt(tokens[2]));
-        //op.type = tokenToType(tokens[0]);
-        //op.operationName = tokens[1];
-        //op.numCycles = Integer.parseInt(tokens[2]);
-        //return op;
     }
 
     private Process.OperationType tokenToType(String token)

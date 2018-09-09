@@ -1,6 +1,7 @@
 /**
- * Module for handling operations in the OS simulation.
- * Done writing, has not been debugged.
+ * Process control block module for OS simulation.
+ * Handles how processes and operations are handled
+ * by the CPU.
  */
 
 import java.util.LinkedList;
@@ -31,47 +32,24 @@ class Process
     }
 
     /**
-     * \brief Enumeration to abstract status codes;
-     */
-    public static enum Status
-    {
-        SUCCESS(0),
-        FAILURE(1);
-
-        public final int value;
-
-        Status(int value)
-        {
-            this.value = value;
-        }
-    }
-
-    /**
      * \brief Class to abstract a primitive operation;
      */
     public static class Operation
     {
         public OperationType type; ///< type of operation to perform
-        public String operationName; ///< name of operation
+        public String name; ///< name of operation
         public int numCycles; ///< amount of cycles to perform
 
         Operation()
         {
-            operationName = new String();
+            name = new String();
         }
 
-        Operation(OperationType type, String operationName, int numCycles)
+        Operation(OperationType type, String name, int numCycles)
         {
             this.type = type;
-            this.operationName = operationName;
+            this.name = new String(name);
             this.numCycles = numCycles;
-        }
-
-        public void showFields()
-        {
-            System.out.println("Type: " + type);
-            System.out.println("Name: " + operationName);
-            System.out.println("Cycles: "+ numCycles);
         }
 
         /**
@@ -107,9 +85,8 @@ class Process
     }
 
     /* Class instance variables */
-    private int processNumber;
-    private String processName = new String();
-    private LinkedList<Operation> operationsQueue;
+    private String processName = new String(); ///< Name of PCB
+    private LinkedList<Operation> operationsQueue; ///< PCB's operation queue
 
     /**
      * \brief ProcessControlBloack constructor
@@ -125,41 +102,36 @@ class Process
         operationsQueue = new LinkedList<Operation>();
     }
 
-    Process(String processName, int processNumber)
-    {
-        this.processName = processName;
-        this.processNumber = processNumber;
-        operationsQueue = new LinkedList<Operation>();
-    }
-
-    public Status run() throws InterruptedException
+    /**
+     * \brief Runs the current PCB's operation queue.
+     * \details If there is an IO operation in the queue,
+     *  it executes its job in a different thread. Otherwise,
+     *  it executes on main thread.
+     */
+    public void run() throws InterruptedException
     {
         while (!operationsQueue.isEmpty())
         {
-            // local object must be final to run in thread
-            final Operation current = operationsQueue.poll();
+            final Operation currOperation = operationsQueue.poll();
 
-            if (current.type == OperationType.OUTPUT ||
-                current.type == OperationType.INPUT)
+            if (currOperation.type == OperationType.INPUT ||
+                currOperation.type == OperationType.OUTPUT)
             {
-                // create new thread for io operation
                 Thread ioThread = new Thread(new Runnable()
                 {
                     public void run()
                     {
-                        executeOperation(current);
+                        executeOperation(currOperation);
                     }
                 });
 
-                ioThread.start(); // start new thread
-                ioThread.join(); // wait until thread is finished
+                ioThread.start();
+                ioThread.join();
             }
-            // execute on main thread
-            else
-                executeOperation(current);
-        }
 
-        return Status.SUCCESS;
+            else
+                executeOperation(currOperation);
+        }
     }
 
     /**
@@ -177,6 +149,9 @@ class Process
     {
         switch (opName)
         {
+            case "run":
+                return Configuration.getIntOption(Configuration.Option.PROCESS_TIME);
+
             case "hard drive":
                 return Configuration.getIntOption(Configuration.Option.HARD_DRIVE_TIME);
 
@@ -186,14 +161,20 @@ class Process
             case "monitor":
                 return Configuration.getIntOption(Configuration.Option.MONITOR_TIME);
 
-            case "printer":
-                return Configuration.getIntOption(Configuration.Option.PRINTER_TIME);
+            case "projector":
+                return Configuration.getIntOption(Configuration.Option.PROJECTOR_TIME);
 
-            case "run":
-                return Configuration.getIntOption(Configuration.Option.PROCESS_TIME);
+            case "scanner":
+                return Configuration.getIntOption(Configuration.Option.SCANNER_TIME);
+
+            case "allocate": case "block":
+                return Configuration.getIntOption(Configuration.Option.MEMORY_TIME);
+
+            case "begin": case "finish":
+                return 0;
 
             default:
-                return 0;
+                return -1;
         }
     }
 
@@ -201,7 +182,7 @@ class Process
      * /brief Adds operation to the end of LinkedList.
      * /param op New operation.
      */
-    public void enqueueOperation(Operation op)
+    public void addOperation(Operation op)
     {
         operationsQueue.add(op);
     }
@@ -210,22 +191,20 @@ class Process
      * \brief Processes operation in front of LinkedList.
      * \details Loops for required amount of cycles and
      *          then waits for the required amount of time
-     *          for cycle. The logger outputs both
-     *
+     *          for cycle(s). The logger stores the currOperation elapsed
+     *          time in a local variable so the time in both logs
+     *          is consistent.
      */
     public final void executeOperation(Operation op)
     {
         BasicTimer tempTimer = new BasicTimer();
+        int waitTime = op.numCycles * getCycleTime(op.name);
 
-        Logger.log(processName + ": start " + op.operationName + " " + op.typeToString());
+        Logger.log(processName + ": start " + op.name + " " + op.typeToString());
 
-        // for each number of cycles wait for required time
-        for (int i = 0; i < op.numCycles; ++i)
-        {
-            tempTimer.start(); // start local time
-            while (tempTimer.getElapsedTime() < getCycleTime(op.operationName));
-        }
+        tempTimer.start();
+        while (tempTimer.getElapsedTime() < waitTime);
 
-        Logger.log(processName + ": end " + op.operationName + " " + op.typeToString());
+        Logger.log(processName + ": end " + op.name + " " + op.typeToString());
     }
 }

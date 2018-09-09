@@ -1,52 +1,50 @@
-20 (msec) - Starting OS simulation
-45 (msec) - OS: starting Process 1
-88 (msec) - Process 1: start run process
-199 (msec) - Process 1: end run process
-200 (msec) - Process 1: start allocate memory
-200 (msec) - Process 1: end allocate memory
-202 (msec) - Process 1: start monitor output
-343 (msec) - Process 1: end monitor output
-344 (msec) - Process 1: start hard drive input
-464 (msec) - Process 1: end hard drive input
-465 (msec) - Process 1: start projector output
-466 (msec) - Process 1: end projector output
-467 (msec) - OS: exiting Process 1
-468 (msec) - OS: starting Process 2
-468 (msec) - Process 2: start allocate memory
-469 (msec) - Process 2: end allocate memory
-469 (msec) - Process 2: start projector output
-470 (msec) - Process 2: end projector output
-471 (msec) - Process 2: start allocate memory
-471 (msec) - Process 2: end allocate memory
-472 (msec) - Process 2: start hard drive input
-577 (msec) - Process 2: end hard drive input
-578 (msec) - Process 2: start hard drive output
-608 (msec) - Process 2: end hard drive output
-609 (msec) - Process 2: start hard drive output
-849 (msec) - Process 2: end hard drive output
-850 (msec) - Process 2: start allocate memory
-850 (msec) - Process 2: end allocate memory
-851 (msec) - Process 2: start run process
-911 (msec) - Process 2: end run process
-912 (msec) - Process 2: start projector output
-912 (msec) - Process 2: end projector output
-913 (msec) - OS: exiting Process 2
-914 (msec) - OS: starting Process 3
-914 (msec) - Process 3: start block memory
-915 (msec) - Process 3: end block memory
-916 (msec) - Process 3: start keyboard input
-1766 (msec) - Process 3: end keyboard input
-1767 (msec) - Process 3: start block memory
-1767 (msec) - Process 3: end block memory
-1768 (msec) - Process 3: start run process
-1818 (msec) - Process 3: end run process
-1819 (msec) - Process 3: start run process
-1869 (msec) - Process 3: end run process
-1870 (msec) - Process 3: start hard drive output
-1960 (msec) - Process 3: end hard drive output
-1961 (msec) - Process 3: start run process
-2141 (msec) - Process 3: end run process
-2142 (msec) - Process 3: start finish system
-2142 (msec) - Process 3: end finish system
-2142 (msec) - OS: exiting Process 3
-2143 (msec) - Ending OS simulation
+0 (msec) - Starting OS simulation
+48 (msec) - OS: starting Process 0
+106 (msec) - Process 0: start run process
+216 (msec) - Process 0: end run process
+217 (msec) - Process 0: start allocate memory
+277 (msec) - Process 0: end allocate memory
+279 (msec) - Process 0: start monitor output
+419 (msec) - Process 0: end monitor output
+420 (msec) - Process 0: start hard drive input
+540 (msec) - Process 0: end hard drive input
+541 (msec) - Process 0: start projector output
+741 (msec) - Process 0: end projector output
+742 (msec) - OS: exiting Process 0
+742 (msec) - OS: starting Process 1
+742 (msec) - Process 1: start allocate memory
+862 (msec) - Process 1: end allocate memory
+863 (msec) - Process 1: start projector output
+923 (msec) - Process 1: end projector output
+923 (msec) - Process 1: start allocate memory
+1013 (msec) - Process 1: end allocate memory
+1014 (msec) - Process 1: start hard drive input
+1120 (msec) - Process 1: end hard drive input
+1121 (msec) - Process 1: start hard drive output
+1151 (msec) - Process 1: end hard drive output
+1152 (msec) - Process 1: start hard drive output
+1393 (msec) - Process 1: end hard drive output
+1393 (msec) - Process 1: start allocate memory
+1513 (msec) - Process 1: end allocate memory
+1513 (msec) - Process 1: start run process
+1573 (msec) - Process 1: end run process
+1574 (msec) - Process 1: start projector output
+1615 (msec) - Process 1: end projector output
+1616 (msec) - OS: exiting Process 1
+1617 (msec) - OS: starting Process 2
+1617 (msec) - Process 2: start block memory
+1798 (msec) - Process 2: end block memory
+1799 (msec) - Process 2: start keyboard input
+2649 (msec) - Process 2: end keyboard input
+2649 (msec) - Process 2: start block memory
+2769 (msec) - Process 2: end block memory
+2769 (msec) - Process 2: start run process
+2819 (msec) - Process 2: end run process
+2819 (msec) - Process 2: start run process
+2871 (msec) - Process 2: end run process
+2872 (msec) - Process 2: start hard drive output
+2962 (msec) - Process 2: end hard drive output
+2962 (msec) - Process 2: start run process
+3143 (msec) - Process 2: end run process
+3143 (msec) - OS: exiting Process 2
+3144 (msec) - Ending OS simulation
