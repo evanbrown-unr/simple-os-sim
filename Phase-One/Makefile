@@ -7,6 +7,7 @@ JC = javac
 CLASSES = \
         OSSim.java \
         OperatingSystem.java \
+        Operation.java \
         Configuration.java \
         Logger.java \
         ProcessControlBlock.java \

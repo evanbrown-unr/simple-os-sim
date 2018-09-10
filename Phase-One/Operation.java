@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 
 /**
  * \brief Enumeration to abstract type of operation.
@@ -26,7 +25,7 @@ enum OperationType
  * performed by the CPU. For this phase there are six:
  * system, application, process, input, output, memory.
  */
-public class Operation
+class Operation
 {
     public OperationType type;
     public String name;

@@ -12,7 +12,6 @@ import java.lang.InterruptedException;
 
 class OperatingSystem
 {
-    /* Class instance variables */
     private LinkedList<ProcessControlBlock> readyQueue;
     private boolean isMetaDataLoaded;
     private final Operation startOperation = new Operation(OperationType.SYSTEM, "begin", 0),
@@ -72,7 +71,7 @@ class OperatingSystem
             Logger.logError("No meta data path found");
 
         FileInputStream metaDataFile = new FileInputStream(filePath);
-        Scanner metaDataScanner = new Scanner(metaDataFile).useDelimiter(";|:|\\.");
+        Scanner metaDataScanner = new Scanner(metaDataFile).useDelimiter("; |;\n|:\n|\\.");
         ProcessControlBlock currPCB = null;
         boolean foundSystemStart = false;
         int appCount = 0;
@@ -85,12 +84,12 @@ class OperatingSystem
             Operation currOperation = getTokens(metaDataScanner);
 
             // Found system finish operation
-            if (currOperation.equals(endOperation))
-                break;
+            if (currOperation.equals(startOperation))
+                foundSystemStart = true;
 
             // Found system begin operation
-            else if (currOperation.equals(startOperation))
-                foundSystemStart = true;
+            else if (currOperation.equals(endOperation))
+                break;
 
             // System begin operation does not exist
             else if (!foundSystemStart)
@@ -99,7 +98,7 @@ class OperatingSystem
             // Handling application processes
             else if (currOperation.type == OperationType.APP)
             {
-                if (currOperation.name.contains("begin"))
+                if (currOperation.name.equals("begin"))
                 {
                     currPCB = new ProcessControlBlock("Process " + Integer.toString(appCount));
                     readyQueue.add(currPCB);
@@ -135,9 +134,7 @@ class OperatingSystem
      */
     private Operation getTokens(Scanner metaDataScanner) throws FileNotFoundException, IOException
     {
-        String jobString = metaDataScanner.next();
-        if (jobString.contains("End Program")) return null;
-        String[] tokens = jobString.split("\\{|\\}");
+        String[] tokens = metaDataScanner.next().split("\\{|\\}");
         for (String s : tokens) s.trim();
         return new Operation(tokenToType(tokens[0]), tokens[1],
                              Integer.parseInt(tokens[2]));
@@ -150,20 +147,19 @@ class OperatingSystem
      */
     private OperationType tokenToType(String token) throws FileNotFoundException, IOException
     {
-        if (token.contains("S"))
+        if (token.equals("S"))
             return OperationType.SYSTEM;
-        if (token.contains("A"))
+        if (token.equals("A"))
             return OperationType.APP;
-        if (token.contains("P"))
+        if (token.equals("P"))
             return OperationType.PROCESS;
-        if (token.contains("I"))
+        if (token.equals("I"))
             return OperationType.INPUT;
-        if (token.contains("O"))
+        if (token.equals("O"))
             return OperationType.OUTPUT;
-        if (token.contains("M"))
+        if (token.equals("M"))
             return OperationType.MEMORY;
 
-        Logger.logError("Token does not represent valid type");
         return null;
     }
 }
