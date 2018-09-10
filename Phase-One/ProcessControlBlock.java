@@ -14,7 +14,7 @@ import java.io.IOException;
 class ProcessControlBlock
 {
     /* Class instance variables */
-    private String processName = new String();
+    private String processName;
     private LinkedList<Operation> operationQueue;
 
     /**
@@ -28,7 +28,7 @@ class ProcessControlBlock
     ProcessControlBlock(String processName)
     {
         this.processName = processName;
-        operationQueue = new LinkedList<Operation>();
+        this.operationQueue = new LinkedList<Operation>();
     }
 
     /**
@@ -112,7 +112,7 @@ class ProcessControlBlock
      * \brief Processes operation in front of LinkedList.
      * \details Loops for required amount of cycles and
      *          then waits for the required amount of time
-     *          for cycle(s). The logger stores the currOperation elapsed
+     *          for cycle(s). The logger stores the operation's elapsed
      *          time in a local variable so the time in both logs
      *          is consistent.
      */
