@@ -8,24 +8,30 @@ import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.InterruptedException;
 
 class OperatingSystem
 {
     private LinkedList<ProcessControlBlock> readyQueue;
-    private boolean isMetaDataLoaded;
-    private final Operation startOperation = new Operation(OperationType.SYSTEM, "begin", 0),
-                            endOperation = new Operation(OperationType.SYSTEM, "finish", 0);
+    private boolean isMetaDataLoaded,
+                    foundSystemBegin,
+                    foundSystemFinish;
+    private final Operation beginOperation = new Operation(OperationType.SYSTEM, "begin", 0),
+                            finsihOperation = new Operation(OperationType.SYSTEM, "finish", 0);
 
     /**
      * \brief Class constructor.
      * \details The meta data is read upon creation.
      *          The status flag is stored in an instance variable.
      */
-    OperatingSystem() throws FileNotFoundException, IOException
+    OperatingSystem(String configFilePath) throws FileNotFoundException, IOException
     {
+        Configuration.init(configFilePath);
+        Logger.init();
+
         readyQueue = new LinkedList<ProcessControlBlock>();
         isMetaDataLoaded = readMetaData();
+        foundSystemBegin  = false;
+        foundSystemFinish = false;
     }
 
     /**
@@ -73,48 +79,58 @@ class OperatingSystem
         FileInputStream metaDataFile = new FileInputStream(filePath);
         Scanner metaDataScanner = new Scanner(metaDataFile).useDelimiter("; |;\n|:\n|\\.");
         ProcessControlBlock currPCB = null;
-        boolean foundSystemStart = false;
         int appCount = 0;
 
         if (!metaDataScanner.next().contains("Start Program"))
             Logger.logError("Meta data file does not contain start prompt");
 
-        while (true)
+        while (metaDataScanner.hasNext())
         {
             Operation currOperation = getTokens(metaDataScanner);
 
             // Found system finish operation
-            if (currOperation.equals(startOperation))
-                foundSystemStart = true;
+            if (currOperation.equals(beginOperation))
+                foundSystemBegin = true;
 
             // Found system begin operation
-            else if (currOperation.equals(endOperation))
+            else if (currOperation.equals(finsihOperation))
+            {
+                foundSystemFinish = true;
                 break;
+            }
 
             // System begin operation does not exist
-            else if (!foundSystemStart)
-                Logger.logError("Missing OS system start opertation");
+            else if (!foundSystemBegin)
+                Logger.logError("Missing OS system begin operation");
 
             // Handling application processes
             else if (currOperation.type == OperationType.APP)
             {
                 if (currOperation.name.equals("begin"))
                 {
-                    currPCB = new ProcessControlBlock("Process " + Integer.toString(appCount));
+                    currPCB = new ProcessControlBlock("Process " + Integer.toString(++appCount));
                     readyQueue.add(currPCB);
-                    ++appCount;
                 }
             }
 
             // Add operation to current application
-            else
+            else if (currOperation.type == OperationType.PROCESS ||
+                     currOperation.type == OperationType.INPUT ||
+                     currOperation.type == OperationType.OUTPUT ||
+                     currOperation.type == OperationType.MEMORY)
             {
                 if (currPCB == null)
                     Logger.logError("No application created for current operations");
 
                 currPCB.addOperation(currOperation);
             }
+
+            else
+                Logger.logError("Operation type is not valid");
         }
+
+        if (!foundSystemFinish)
+            Logger.logError("Missing OS system finish operation");
 
         metaDataFile.close();
         metaDataScanner.close();

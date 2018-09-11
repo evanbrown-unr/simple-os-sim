@@ -13,7 +13,6 @@ import java.io.IOException;
 
 class ProcessControlBlock
 {
-    /* Class instance variables */
     private String processName;
     private LinkedList<Operation> operationQueue;
 
@@ -42,17 +41,19 @@ class ProcessControlBlock
         while (!operationQueue.isEmpty())
         {
             final Operation currOperation = operationQueue.poll();
+            Thread ioThread;
 
             if (currOperation.type == OperationType.INPUT ||
                 currOperation.type == OperationType.OUTPUT)
             {
-                Thread ioThread = new Thread(new Runnable()
-                {
-                    public void run()
+                ioThread = new Thread(new Runnable()
                     {
-                        executeOperation(currOperation);
+                        public void run()
+                        {
+                            executeOperation(currOperation);
+                        }
                     }
-                });
+                );
 
                 ioThread.start();
                 ioThread.join();
@@ -100,8 +101,8 @@ class ProcessControlBlock
     }
 
     /**
-     * /brief Adds operation to the end of LinkedList.
-     * /param op New operation.
+     * \brief Adds operation to the end of LinkedList.
+     * \param op New operation.
      */
     public void addOperation(Operation op)
     {

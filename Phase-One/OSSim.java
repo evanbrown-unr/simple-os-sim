@@ -3,6 +3,7 @@
  * Contains main driver method for the simulation.
  */
 
+import java.lang.InterruptedException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -20,9 +21,7 @@ class OSSim
             System.exit(1);
         }
 
-        Configuration.init(args[0]);
-        Logger.init();
-        OperatingSystem os = new OperatingSystem();
+        OperatingSystem os = new OperatingSystem(args[0]);
         os.simulate();
     }
 }

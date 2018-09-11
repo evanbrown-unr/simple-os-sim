@@ -8,11 +8,11 @@
  * by using regular expressions.
  */
 
+import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * \brief Enumeration to represent the different config options.
@@ -159,7 +159,6 @@ public class Configuration
 
         version = extractOption(configScan);
         mdfPath = extractOption(configScan);
-
         // Time values must be integers
         monitorTime = Integer.parseInt(extractOption(configScan));
         processorTime = Integer.parseInt(extractOption(configScan));
@@ -168,7 +167,6 @@ public class Configuration
         keyboardTime = Integer.parseInt(extractOption(configScan));
         memoryTime = Integer.parseInt(extractOption(configScan));
         projectorTime = Integer.parseInt(extractOption(configScan));
-
         String logTypeString = extractOption(configScan);
         logFilePath = extractOption(configScan);
 

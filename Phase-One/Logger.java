@@ -7,7 +7,6 @@
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.StringBuffer;
 
 public class Logger
 {
@@ -83,6 +82,9 @@ public class Logger
      */
     public static void writeToFile() throws FileNotFoundException, IOException
     {
+        if (!toFile)
+            return;
+
         FileOutputStream outputFile = new FileOutputStream(filePath);
         byte[] bytes = buffer.toString().getBytes();
         outputFile.write(bytes);
