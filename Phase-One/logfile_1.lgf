@@ -1,50 +1,27 @@
-0 (msec) - Beginning OS simulation
-59 (msec) - OS: beginning Process 1
-122 (msec) - Process 1: start run process
-233 (msec) - Process 1: end run process
-233 (msec) - Process 1: start allocate memory
-294 (msec) - Process 1: end allocate memory
-296 (msec) - Process 1: start monitor output
-436 (msec) - Process 1: end monitor output
-437 (msec) - Process 1: start hard drive input
-557 (msec) - Process 1: end hard drive input
-558 (msec) - Process 1: start projector output
-758 (msec) - Process 1: end projector output
-760 (msec) - OS: finishing Process 1
-760 (msec) - OS: beginning Process 2
-761 (msec) - Process 2: start allocate memory
-881 (msec) - Process 2: end allocate memory
-883 (msec) - Process 2: start projector output
-944 (msec) - Process 2: end projector output
-945 (msec) - Process 2: start allocate memory
-1035 (msec) - Process 2: end allocate memory
-1037 (msec) - Process 2: start hard drive input
-1142 (msec) - Process 2: end hard drive input
-1144 (msec) - Process 2: start hard drive output
-1174 (msec) - Process 2: end hard drive output
-1176 (msec) - Process 2: start hard drive output
-1416 (msec) - Process 2: end hard drive output
-1416 (msec) - Process 2: start allocate memory
-1537 (msec) - Process 2: end allocate memory
-1537 (msec) - Process 2: start run process
-1598 (msec) - Process 2: end run process
-1599 (msec) - Process 2: start projector output
-1640 (msec) - Process 2: end projector output
-1640 (msec) - OS: finishing Process 2
-1641 (msec) - OS: beginning Process 3
-1641 (msec) - Process 3: start block memory
-1822 (msec) - Process 3: end block memory
-1823 (msec) - Process 3: start keyboard input
-2673 (msec) - Process 3: end keyboard input
-2673 (msec) - Process 3: start block memory
-2794 (msec) - Process 3: end block memory
-2794 (msec) - Process 3: start run process
-2845 (msec) - Process 3: end run process
-2845 (msec) - Process 3: start run process
-2896 (msec) - Process 3: end run process
-2897 (msec) - Process 3: start hard drive output
-2987 (msec) - Process 3: end hard drive output
-2987 (msec) - Process 3: start run process
-3168 (msec) - Process 3: end run process
-3168 (msec) - OS: finishing Process 3
-3169 (msec) - Finishing OS simulation
+Configuration File Data:
+Monitor : 20 ms/cycle
+Processor : 10 ms/cycle
+Scanner : 10 ms/cycle
+Hard Drive : 15 ms/cycle
+Keyboard : 50 ms/cycle
+Memory : 30 ms/cycle
+Projector : 10 ms/cycle
+Logged to : monitor and logfile_1.lgf
+
+Meta-Data Metrics:
+PROCESS{run}11 - 110 ms
+MEMORY{allocate}2 - 60 ms
+OUTPUT{monitor}7 - 140 ms
+INPUT{hard drive}8 - 120 ms
+INPUT{scanner}8 - 80 ms
+OUTPUT{projector}20 - 200 ms
+PROCESS{run}6 - 60 ms
+OUTPUT{projector}4 - 40 ms
+MEMORY{block}6 - 180 ms
+INPUT{keyboard}17 - 850 ms
+MEMORY{block}4 - 120 ms
+OUTPUT{projector}8 - 80 ms
+PROCESS{run}5 - 50 ms
+PROCESS{run}5 - 50 ms
+OUTPUT{hard drive}6 - 90 ms
+PROCESS{run}18 - 180 ms
