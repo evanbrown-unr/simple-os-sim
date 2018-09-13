@@ -122,11 +122,9 @@ class ProcessControlBlock
         BasicTimer tempTimer = new BasicTimer();
         int waitTime = op.numCycles * getCycleTime(op.name);
 
-        Logger.log(processName + ": start " + op.name + " " + op.typeToString());
-
         tempTimer.start();
         while (tempTimer.getElapsedTime() < waitTime);
 
-        Logger.log(processName + ": end " + op.name + " " + op.typeToString());
+        Logger.log(op.type+"{"+op.name+"}"+op.numCycles+" - "+waitTime+" ms");
     }
 }

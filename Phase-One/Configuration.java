@@ -144,6 +144,25 @@ public class Configuration
         }
     }
 
+    public static void output()
+    {
+        Logger.log("Configuration File Data:\n" +
+                   "Monitor : " + monitorTime + " ms/cycle\n" +
+                   "Processor : " + processorTime + " ms/cycle\n" +
+                   "Scanner : " + scannerTime + " ms/cycle\n" +
+                   "Hard Drive : " + hardDriveTime + " ms/cycle\n" +
+                   "Keyboard : " + keyboardTime + " ms/cycle\n" +
+                   "Memory : " + memoryTime + " ms/cycle\n" +
+                   "Projector : " + projectorTime + " ms/cycle");
+
+        if (Configuration.logType == LogType.MONITOR)
+            Logger.log("Logged to : monitor\n");
+        else if (Configuration.logType == LogType.FILE)
+            Logger.log("Logged to : " + logFilePath + "\n");
+        else if (Configuration.logType == LogType.BOTH)
+            Logger.log("Logged to : monitor and " + logFilePath + "\n");
+    }
+
     /**
      * \brief Reads the configuration file and sets configuration
      *        settings.

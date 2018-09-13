@@ -11,10 +11,10 @@ import java.io.IOException;
 public class Logger
 {
     private static BasicTimer timer;
-    private static StringBuffer buffer;
+    private static StringBuffer fileBuffer;
+    private static String filePath;
     public static boolean toMonitor,
                           toFile;
-    public static String filePath;
 
     /**
      * \brief Initializes the class.
@@ -26,7 +26,7 @@ public class Logger
     public static void init() throws FileNotFoundException, IOException
     {
         timer = new BasicTimer();
-        buffer = new StringBuffer();
+        fileBuffer = new StringBuffer();
         filePath = new String(Configuration.logFilePath);
 
         if (Configuration.logType == LogType.MONITOR)
@@ -69,15 +69,15 @@ public class Logger
         int elapsedTime = timer.getElapsedTime();
 
         if (toMonitor)
-            System.out.println(elapsedTime + " (msec) - " + msg);
+            System.out.println(msg);
 
         if (toFile)
-            buffer.append(elapsedTime + " (msec) - " + msg + "\n");
+            fileBuffer.append(msg+"\n");
     }
 
     /**
-     * \brief Used to flush the string buffer to the specified logFile
-     * \details The buffer must be converted to bytes before writing
+     * \brief Used to flush the string fileBuffer to the specified logFile
+     * \details The fileBuffer must be converted to bytes before writing
      *          data to the file.
      */
     public static void writeToFile() throws FileNotFoundException, IOException
@@ -86,7 +86,7 @@ public class Logger
             return;
 
         FileOutputStream outputFile = new FileOutputStream(filePath);
-        byte[] bytes = buffer.toString().getBytes();
+        byte[] bytes = fileBuffer.toString().getBytes();
         outputFile.write(bytes);
         outputFile.close();
     }
@@ -100,5 +100,10 @@ public class Logger
         log("ERROR: " + errMsg + "\nExiting with return code 1");
         writeToFile();
         System.exit(1);
+    }
+
+    private static void logConfigOutput()
+    {
+
     }
 }

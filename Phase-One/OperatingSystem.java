@@ -45,21 +45,16 @@ class OperatingSystem
         if (!isMetaDataLoaded)
             Logger.logError("Meta data file has not been processed");
 
-        Logger.startLogTimer();
-        Logger.log("Beginning OS simulation");
+        Configuration.output();
+
+        Logger.log("Meta-Data Metrics:");
 
         while (!readyQueue.isEmpty())
         {
             ProcessControlBlock currPCB = readyQueue.poll();
-
-            Logger.log("OS: beginning " + currPCB.getName());
-
             currPCB.run();
-
-            Logger.log("OS: finishing " + currPCB.getName());
         }
 
-        Logger.log("Finishing OS simulation");
         Logger.writeToFile();
     }
 

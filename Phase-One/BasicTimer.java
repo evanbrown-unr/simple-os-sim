@@ -46,8 +46,9 @@ class BasicTimer
 
     /**
      * \brief Gives the amount of time elapsed since started (msec).
-     * \detials If the timer hasn't been stopped then it performs calculation
+     * \detaills If the timer hasn't been stopped then it performs calculation
      *          based off of that moment.
+     * \return The elapsed time since start was called.
      */
     public int getElapsedTime()
     {
