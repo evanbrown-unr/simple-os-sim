@@ -16,7 +16,7 @@ class OperatingSystem
                     foundSystemBegin,
                     foundSystemFinish;
     private final Operation beginOperation = new Operation(OperationType.SYSTEM, "begin", 0),
-                            finsihOperation = new Operation(OperationType.SYSTEM, "finish", 0);
+                            finishOperation = new Operation(OperationType.SYSTEM, "finish", 0);
 
     /**
      * \brief Class constructor.
@@ -28,10 +28,17 @@ class OperatingSystem
         Configuration.init(configFilePath);
         Logger.init();
 
-        readyQueue = new LinkedList<ProcessControlBlock>();
-        isMetaDataLoaded = readMetaData();
         foundSystemBegin  = false;
         foundSystemFinish = false;
+        readyQueue = new LinkedList<ProcessControlBlock>();
+
+        try {
+            isMetaDataLoaded = readMetaData();
+        } catch (FileNotFoundException e) {
+            Logger.logError("Meta data file not found");
+        } catch (IOException e) {
+            Logger.logError("IO failed on file " + Configuration.mdfPath);
+        }
     }
 
     /**
@@ -83,12 +90,12 @@ class OperatingSystem
         {
             Operation currOperation = getTokens(metaDataScanner);
 
-            // Found system finish operation
+            // Found system begin operation
             if (currOperation.equals(beginOperation))
                 foundSystemBegin = true;
 
-            // Found system begin operation
-            else if (currOperation.equals(finsihOperation))
+            // Found system finish operation
+            else if (currOperation.equals(finishOperation))
             {
                 foundSystemFinish = true;
                 break;
@@ -121,11 +128,8 @@ class OperatingSystem
             }
 
             else
-                Logger.logError("Operation type is not valid");
+                Logger.logError("Operation is not valid");
         }
-
-        if (!foundSystemFinish)
-            Logger.logError("Missing OS system finish operation");
 
         metaDataFile.close();
         metaDataScanner.close();

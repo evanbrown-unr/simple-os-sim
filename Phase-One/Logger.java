@@ -10,11 +10,12 @@ import java.io.IOException;
 
 public class Logger
 {
-    private static BasicTimer timer;
     private static StringBuffer fileBuffer;
     private static String filePath;
-    public static boolean toMonitor,
-                          toFile;
+    private static boolean toMonitor,
+                           toFile;
+    public static BasicTimer timer;
+
 
     /**
      * \brief Initializes the class.
@@ -49,14 +50,6 @@ public class Logger
     }
 
     /**
-     * \brief Function to wrap the timer's functionality.
-     */
-    public static void startLogTimer()
-    {
-        timer.start();
-    }
-
-    /**
      * \brief Logs the current elapsed time and a message.
      * \details It gets sent to either the console, the file,
      *          both, or neither. The current elapsed time is
@@ -66,8 +59,6 @@ public class Logger
      */
     public static void log(String msg)
     {
-        int elapsedTime = timer.getElapsedTime();
-
         if (toMonitor)
             System.out.println(msg);
 
@@ -100,10 +91,5 @@ public class Logger
         log("ERROR: " + errMsg + "\nExiting with return code 1");
         writeToFile();
         System.exit(1);
-    }
-
-    private static void logConfigOutput()
-    {
-
     }
 }

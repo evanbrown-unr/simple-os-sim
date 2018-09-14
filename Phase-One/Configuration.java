@@ -83,7 +83,14 @@ public class Configuration
         version = new String();
         mdfPath = new String();
         logFilePath = new String();
-        readConfigFile(configFilePath);
+
+        try {
+            readConfigFile(configFilePath);
+        } catch (FileNotFoundException e) {
+            System.err.println("ERROR: Configuration file not found\nExiting with return code 1");
+        } catch (IOException e) {
+            System.err.println("IO failed on file " + configFilePath + "\nExiting with return code 1");
+        }
     }
 
     /**
@@ -156,11 +163,11 @@ public class Configuration
                    "Projector : " + projectorTime + " ms/cycle");
 
         if (Configuration.logType == LogType.MONITOR)
-            Logger.log("Logged to : monitor\n");
+            Logger.log("Logged to : Monitor\n");
         else if (Configuration.logType == LogType.FILE)
             Logger.log("Logged to : " + logFilePath + "\n");
         else if (Configuration.logType == LogType.BOTH)
-            Logger.log("Logged to : monitor and " + logFilePath + "\n");
+            Logger.log("Logged to : Monitor and " + logFilePath + "\n");
     }
 
     /**
@@ -207,6 +214,7 @@ public class Configuration
         configFile.close();
         configScan.close();
     }
+
 
     /**
      * \brief Helper function to parse configuration line

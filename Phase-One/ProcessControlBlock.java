@@ -73,7 +73,7 @@ class ProcessControlBlock
     }
 
     /**
-     * \brief Getter for the process cycle time.
+     * \brief Getter for the operation cycle time.
      */
     public int getCycleTime(String opName)
     {
@@ -119,12 +119,13 @@ class ProcessControlBlock
      */
     public final void executeOperation(Operation op)
     {
-        BasicTimer tempTimer = new BasicTimer();
         int waitTime = op.numCycles * getCycleTime(op.name);
 
-        tempTimer.start();
-        while (tempTimer.getElapsedTime() < waitTime);
+        Logger.timer.start();
+        while (Logger.timer.getElapsedTime() < waitTime);
+        Logger.timer.stop();
 
-        Logger.log(op.type+"{"+op.name+"}"+op.numCycles+" - "+waitTime+" ms");
+        Logger.log(op.type + "{" + op.name + "}" +
+                   op.numCycles + " - " + waitTime + " ms");
     }
 }

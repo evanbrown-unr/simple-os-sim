@@ -6,21 +6,26 @@ Hard Drive : 15 ms/cycle
 Keyboard : 50 ms/cycle
 Memory : 30 ms/cycle
 Projector : 10 ms/cycle
-Logged to : monitor and logfile_1.lgf
+Logged to : Monitor and logfile_1.lgf
 
 Meta-Data Metrics:
 PROCESS{run}11 - 110 ms
 MEMORY{allocate}2 - 60 ms
 OUTPUT{monitor}7 - 140 ms
 INPUT{hard drive}8 - 120 ms
-INPUT{scanner}8 - 80 ms
 OUTPUT{projector}20 - 200 ms
+MEMORY{allocate}4 - 120 ms
+OUTPUT{projector}6 - 60 ms
+MEMORY{allocate}3 - 90 ms
+INPUT{hard drive}7 - 105 ms
+OUTPUT{hard drive}2 - 30 ms
+OUTPUT{hard drive}16 - 240 ms
+MEMORY{allocate}4 - 120 ms
 PROCESS{run}6 - 60 ms
 OUTPUT{projector}4 - 40 ms
 MEMORY{block}6 - 180 ms
 INPUT{keyboard}17 - 850 ms
 MEMORY{block}4 - 120 ms
-OUTPUT{projector}8 - 80 ms
 PROCESS{run}5 - 50 ms
 PROCESS{run}5 - 50 ms
 OUTPUT{hard drive}6 - 90 ms
