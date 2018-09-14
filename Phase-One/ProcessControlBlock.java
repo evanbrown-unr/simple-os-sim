@@ -5,7 +5,6 @@
  */
 
 import java.util.LinkedList;
-import java.io.*;
 
 class ProcessControlBlock
 {
@@ -118,7 +117,6 @@ class ProcessControlBlock
 
         Logger.timer.start();
         while (Logger.timer.getElapsedTime() < waitTime);
-        Logger.timer.stop();
 
         Logger.log(op.typeToToken() + "{" + op.name + "}" +
                    op.numCycles + " - " + waitTime + " ms");

@@ -9,9 +9,9 @@
 
 class BasicTimer
 {
-    protected long startTime;
-    protected long stopTime;
-    protected boolean isRunning;
+    private long startTime;
+    private long stopTime;
+    private boolean isRunning;
 
     /**
      * \brief Timer constructor.
