@@ -73,7 +73,7 @@ class OperatingSystem
      */
     public boolean readMetaData() throws FileNotFoundException, IOException
     {
-        String filePath = Configuration.getStringOption(Option.MDF_PATH);
+        String filePath = Configuration.mdfPath;
 
         if (filePath.isEmpty())
             Logger.logError("No meta data path found");
@@ -175,6 +175,7 @@ class OperatingSystem
         if (token.equals("M"))
             return OperationType.MEMORY;
 
+        Logger.logError("Not a valid token");
         return null;
     }
 }

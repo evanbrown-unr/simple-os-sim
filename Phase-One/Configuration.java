@@ -101,63 +101,8 @@ public class Configuration
     }
 
     /**
-     * \brief Helper method to return string options.
-     * \details Theres no way to return both objects, so
-     *          I created two functions for retrieving option
-     *          data: one for integers, one for strings.
-     * \param opt: An instance of the enum Option.
-     * \return String value that corresponds to the case
-     *         labels name.
+     * \brief Logs the configuration settings.
      */
-    public static String getStringOption(Option opt)
-    {
-        switch (opt)
-        {
-            case VERSION:
-                return version;
-            case MDF_PATH:
-                return mdfPath;
-            case LOG_FILE_PATH:
-                return logFilePath;
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * \brief Helper method to return integer options.
-     * \details Theres no way to return both objects, so
-     *          I created two functions for retrieving option
-     *          data: one for integers, one for strings.
-     * \param opt: An instance of the enum Option.
-     * \return Integer value that corresponds to the case
-     *         labels name.
-     */
-    public static int getIntOption(Option opt)
-    {
-        switch (opt)
-        {
-            case PROCESS_TIME:
-                return processorTime;
-            case MONITOR_TIME:
-                return monitorTime;
-            case HARD_DRIVE_TIME:
-                return hardDriveTime;
-            case KEYBOARD_TIME:
-                return keyboardTime;
-            case SCANNER_TIME:
-                return scannerTime;
-            case PROJECTOR_TIME:
-                return projectorTime;
-            case MEMORY_TIME:
-                return memoryTime;
-            case LOG_TYPE:
-                return logType.value;
-            default:
-                return -1;
-        }
-    }
-
     public static void output()
     {
         Logger.log("Configuration File Data:\n" +
@@ -192,7 +137,7 @@ public class Configuration
 
         version = extractOption(configScan);
         mdfPath = extractOption(configScan);
-        // Time values must be integers
+
         monitorTime = Integer.parseInt(extractOption(configScan));
         processorTime = Integer.parseInt(extractOption(configScan));
         scannerTime = Integer.parseInt(extractOption(configScan));
@@ -200,6 +145,7 @@ public class Configuration
         keyboardTime = Integer.parseInt(extractOption(configScan));
         memoryTime = Integer.parseInt(extractOption(configScan));
         projectorTime = Integer.parseInt(extractOption(configScan));
+
         String logTypeString = extractOption(configScan);
         logFilePath = extractOption(configScan);
 

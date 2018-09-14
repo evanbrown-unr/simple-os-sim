@@ -4,20 +4,14 @@
  */
 enum OperationType
 {
-    SYSTEM(0),
-    APP(1),
-    PROCESS(2),
-    INPUT(3),
-    OUTPUT(4),
-    MEMORY(5);
-
-    public final int value;
-
-    OperationType(int value)
-    {
-        this.value = value;
-    }
+    SYSTEM,
+    APP,
+    PROCESS,
+    INPUT,
+    OUTPUT,
+    MEMORY;
 }
+
 
 
 /**
@@ -48,22 +42,22 @@ class Operation
      * \brief Returns object's type as a string.
      * \return Type in string format.
      */
-    public String typeToString()
+    public String typeToToken()
     {
         switch (type)
         {
             case SYSTEM:
-                return "system";
+                return "S";
             case APP:
-                return "app";
+                return "A";
             case PROCESS:
-                return "process";
+                return "P";
             case INPUT:
-                return "input";
+                return "I";
             case OUTPUT:
-                return "output";
+                return "O";
             case MEMORY:
-                return "memory";
+                return "M";
             default:
                 return null;
         }

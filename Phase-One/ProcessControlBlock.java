@@ -5,6 +5,7 @@
  */
 
 import java.util.LinkedList;
+import java.io.*;
 
 class ProcessControlBlock
 {
@@ -36,12 +37,11 @@ class ProcessControlBlock
         while (!operationQueue.isEmpty())
         {
             final Operation currOperation = operationQueue.poll();
-            Thread ioThread;
 
             if (currOperation.type == OperationType.INPUT ||
                 currOperation.type == OperationType.OUTPUT)
             {
-                ioThread = new Thread(new Runnable()
+                Thread ioThread = new Thread(new Runnable()
                     {
                         public void run()
                         {
@@ -75,19 +75,19 @@ class ProcessControlBlock
         switch (opName)
         {
             case "run":
-                return Configuration.getIntOption(Option.PROCESS_TIME);
+                return Configuration.processorTime;
             case "hard drive":
-                return Configuration.getIntOption(Option.HARD_DRIVE_TIME);
+                return Configuration.hardDriveTime;
             case "keyboard":
-                return Configuration.getIntOption(Option.KEYBOARD_TIME);
+                return Configuration.keyboardTime;
             case "monitor":
-                return Configuration.getIntOption(Option.MONITOR_TIME);
+                return Configuration.monitorTime;
             case "projector":
-                return Configuration.getIntOption(Option.PROJECTOR_TIME);
+                return Configuration.projectorTime;
             case "scanner":
-                return Configuration.getIntOption(Option.SCANNER_TIME);
+                return Configuration.scannerTime;
             case "allocate": case "block":
-                return Configuration.getIntOption(Option.MEMORY_TIME);
+                return Configuration.memoryTime;
             case "begin": case "finish":
                 return 0;
             default:
@@ -120,7 +120,7 @@ class ProcessControlBlock
         while (Logger.timer.getElapsedTime() < waitTime);
         Logger.timer.stop();
 
-        Logger.log(op.type + "{" + op.name + "}" +
+        Logger.log(op.typeToToken() + "{" + op.name + "}" +
                    op.numCycles + " - " + waitTime + " ms");
     }
 }
