@@ -2,10 +2,13 @@
 /**
  * Configuration module of the OS simulation.
  * It stores the current simulation settings, as well performing
- * the various operations on it. I've written the read method to
- * handle config files that are only in the shown format.
- * In the future, I hope to improve flexibility and performance
- * by using regular expressions.
+ * the various operation times on it on it.
+ *
+ * This class cannot utilize any of the Logger functions as this
+ * is the first class that is initialized in the course of execution.
+ * Instead of handling errors with the logError() method, we simply write
+ * to stderr. I plan on fixing that soon, but for now it handles all errors
+ * so it is good enough.
  */
 
 import java.util.Scanner;
