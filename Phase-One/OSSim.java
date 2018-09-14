@@ -3,7 +3,6 @@
  * Contains main driver method for the simulation.
  */
 
-import java.lang.InterruptedException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -16,8 +15,8 @@ class OSSim
     {
         if (args.length != REQUIRED_ARGS)
         {
-            System.err.println("Must supply configuration file");
-            System.err.println("Exiting with return code 1");
+            System.err.println("ERROR: Must supply configuration file\n" +
+                               "Exiting with return code 1");
             System.exit(1);
         }
 

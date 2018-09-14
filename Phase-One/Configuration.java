@@ -78,7 +78,7 @@ public class Configuration
      *          must be called before using any of its functionalities.
      * \param configFilePath The file path for the configuration file.
      */
-    public static void init(String configFilePath) throws FileNotFoundException, IOException
+    public static void init(String configFilePath)
     {
         version = new String();
         mdfPath = new String();
@@ -87,9 +87,13 @@ public class Configuration
         try {
             readConfigFile(configFilePath);
         } catch (FileNotFoundException e) {
-            System.err.println("ERROR: Configuration file not found\nExiting with return code 1");
+            System.err.println("ERROR: Configuration file not found\n" +
+                               "Exiting with return code 1");
+            System.exit(1);
         } catch (IOException e) {
-            System.err.println("IO failed on file " + configFilePath + "\nExiting with return code 1");
+            System.err.println("IO failed on file " + configFilePath +
+                               "\nExiting with return code 1");
+            System.exit(1);
         }
     }
 
@@ -208,7 +212,9 @@ public class Configuration
                 logType = LogType.FILE;
                 break;
             default:
-                Logger.logError("Failed to configure log type");
+                System.err.println("ERROR: Failed to configure log type\n" +
+                                   "Exiting with return code 1");
+                System.exit(1);
         }
 
         configFile.close();
@@ -228,6 +234,16 @@ public class Configuration
      */
     private static String extractOption(Scanner configScanner)
     {
-        return configScanner.nextLine().split(":")[1].trim();
+        String option = null;
+
+        try {
+            option = configScanner.nextLine().split(":")[1].trim();
+        } catch (Exception e) {
+            System.err.println("ERROR: Missing required configuration data\n" +
+                               "Exiting with return code 1");
+            System.exit(1);
+        }
+
+        return option;
     }
 }
