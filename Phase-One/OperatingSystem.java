@@ -52,8 +52,6 @@ class OperatingSystem
         if (!isMetaDataLoaded)
             Logger.logError("Meta data file has not been processed");
 
-        Configuration.output();
-
         Logger.log("Meta-Data Metrics:");
 
         while (!readyQueue.isEmpty())

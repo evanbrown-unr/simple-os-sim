@@ -47,6 +47,8 @@ public class Logger
         }
         else
             logError("Log type not defined");
+
+        outputConfiguration();
     }
 
     /**
@@ -63,7 +65,7 @@ public class Logger
             System.out.println(msg);
 
         if (toFile)
-            fileBuffer.append(msg+"\n");
+            fileBuffer.append(msg + "\n");
     }
 
     /**
@@ -91,5 +93,24 @@ public class Logger
         log("ERROR: " + errMsg + "\nExiting with return code 1");
         writeToFile();
         System.exit(1);
+    }
+
+    private static void outputConfiguration()
+    {
+        log("Configuration File Data:\n" +
+            "Monitor : " + Configuration.monitorTime + " ms/cycle\n" +
+            "Processor : " + Configuration.processorTime + " ms/cycle\n" +
+            "Scanner : " + Configuration.scannerTime + " ms/cycle\n" +
+            "Hard Drive : " + Configuration.hardDriveTime + " ms/cycle\n" +
+            "Keyboard : " + Configuration.keyboardTime + " ms/cycle\n" +
+            "Memory : " + Configuration.memoryTime + " ms/cycle\n" +
+            "Projector : " + Configuration.projectorTime + " ms/cycle");
+
+        if (Configuration.logType == LogType.MONITOR)
+            log("Logged to : Monitor\n");
+        else if (Configuration.logType == LogType.FILE)
+            log("Logged to : " + Configuration.logFilePath + "\n");
+        else if (Configuration.logType == LogType.BOTH)
+            log("Logged to : Monitor and " + Configuration.logFilePath + "\n");
     }
 }
