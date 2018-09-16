@@ -12,7 +12,6 @@
 
 import java.util.Scanner;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -93,7 +92,7 @@ public class Configuration
                                "Exiting with return code 1");
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("IO failed on file " + configFilePath +
+            System.err.println("ERROR: IO failed on file " + configFilePath +
                                "\nExiting with return code 1");
             System.exit(1);
         }
