@@ -95,6 +95,12 @@ public class Logger
         System.exit(1);
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * \brief Logs the configuration before the OS simulation runs
+     */
+>>>>>>> 1a1d0ce492862c6731fcf61ac2679a2f4a8e86af
     private static void outputConfiguration()
     {
         log("Configuration File Data:\n" +
