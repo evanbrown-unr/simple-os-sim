@@ -11,7 +11,7 @@ import java.io.IOException;
 
 class OperatingSystem
 {
-    private LinkedList<ProcessControlBlock> readyQueue;
+    private LinkedList<ProcessControlBlock> runningQueue;
     private boolean isMetaDataLoaded,
                     foundSystemBegin,
                     foundSystemFinish;
@@ -30,10 +30,10 @@ class OperatingSystem
 
         foundSystemBegin  = false;
         foundSystemFinish = false;
-        readyQueue = new LinkedList<ProcessControlBlock>();
+        runningQueue = new LinkedList<ProcessControlBlock>();
 
         try {
-            isMetaDataLoaded = readMetaData();
+            readMetaData();
         } catch (FileNotFoundException e) {
             Logger.logError("Meta data file not found");
         } catch (IOException e) {
@@ -49,15 +49,12 @@ class OperatingSystem
      */
     public void simulate() throws IOException, InterruptedException
     {
-        if (!isMetaDataLoaded)
-            Logger.logError("Meta data file has not been processed");
-
         Logger.startMasterTimer();
         Logger.log("Simulator program starting");
 
-        while (!readyQueue.isEmpty())
+        while (!runningQueue.isEmpty())
         {
-            ProcessControlBlock currPCB = readyQueue.poll();
+            ProcessControlBlock currPCB = runningQueue.poll();
             Logger.log("OS: preparing process " + currPCB.getProcessID());
             currPCB.setProcessState(State.READY);
             Logger.log("OS: starting process " + currPCB.getProcessID());
@@ -77,7 +74,7 @@ class OperatingSystem
      *          the file into tokens, each one containing the data
      *          needed to define an operation.
      */
-    public boolean readMetaData() throws FileNotFoundException, IOException
+    public void readMetaData() throws FileNotFoundException, IOException
     {
         String filePath = Configuration.mdfPath;
 
@@ -116,8 +113,8 @@ class OperatingSystem
             {
                 if (currOperation.name.equals("begin"))
                 {
-                    currPCB = new ProcessControlBlock(++appCount, State.READY);
-                    readyQueue.add(currPCB);
+                    currPCB = new ProcessControlBlock(++appCount, State.NEW);
+                    runningQueue.add(currPCB);
                 }
             }
 
@@ -139,8 +136,6 @@ class OperatingSystem
 
         metaDataFile.close();
         metaDataScanner.close();
-
-        return true;
     }
 
     /**
