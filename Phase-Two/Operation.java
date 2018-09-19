@@ -47,17 +47,17 @@ class Operation
         switch (type)
         {
             case SYSTEM:
-                return "S";
+                return "system";
             case APP:
-                return "A";
+                return "application";
             case PROCESS:
-                return "P";
+                return "process";
             case INPUT:
-                return "I";
+                return "input";
             case OUTPUT:
-                return "O";
+                return "output";
             case MEMORY:
-                return "M";
+                return "memory";
             default:
                 return null;
         }

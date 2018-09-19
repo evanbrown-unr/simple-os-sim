@@ -52,14 +52,22 @@ class OperatingSystem
         if (!isMetaDataLoaded)
             Logger.logError("Meta data file has not been processed");
 
-        Logger.log("Meta-Data Metrics:");
+        Logger.startMasterTimer();
+        Logger.log("Simulator program starting");
 
         while (!readyQueue.isEmpty())
         {
             ProcessControlBlock currPCB = readyQueue.poll();
+            Logger.log("OS: preparing process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.READY);
+            Logger.log("OS: starting process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.RUNNING);
             currPCB.run();
+            Logger.log("OS: removing process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.TERMINATED);
         }
 
+        Logger.log("Simulator program ending");
         Logger.writeToFile();
     }
 
@@ -108,7 +116,7 @@ class OperatingSystem
             {
                 if (currOperation.name.equals("begin"))
                 {
-                    currPCB = new ProcessControlBlock("Process " + Integer.toString(++appCount));
+                    currPCB = new ProcessControlBlock(++appCount, State.READY);
                     readyQueue.add(currPCB);
                 }
             }

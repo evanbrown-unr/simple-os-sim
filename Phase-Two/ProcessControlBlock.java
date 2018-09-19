@@ -6,9 +6,19 @@
 
 import java.util.LinkedList;
 
+enum State
+{
+    NEW,
+    READY,
+    RUNNING,
+    WAITING,
+    TERMINATED
+}
+
 class ProcessControlBlock
 {
-    private String processName;
+    private int processID;
+    private State processState;
     private LinkedList<Operation> operationQueue;
 
     /**
@@ -19,9 +29,10 @@ class ProcessControlBlock
      * \param processName Name of new PCB
      * \param operationQueue LinkedList of all operations
      */
-    ProcessControlBlock(String processName)
+    ProcessControlBlock(int processID, State processState)
     {
-        this.processName = processName;
+        this.processID = processID;
+        this.processState = processState;
         this.operationQueue = new LinkedList<Operation>();
     }
 
@@ -59,11 +70,24 @@ class ProcessControlBlock
     }
 
     /**
-     * \brief Getter for the process name.
+     * \brief Getter for the process ID.
      */
-    public String getName()
+    public int getProcessID()
     {
-        return processName;
+        return processID;
+    }
+
+    /**
+     * \brief Getter for the process state.
+     */
+    public State getProcessState()
+    {
+        return processState;
+    }
+
+    public void setProcessState(State processState)
+    {
+        this.processState = processState;
     }
 
     /**
@@ -113,12 +137,14 @@ class ProcessControlBlock
      */
     public final void executeOperation(Operation op)
     {
+        BasicTimer tempTimer = new BasicTimer();
         int waitTime = op.numCycles * getCycleTime(op.name);
 
-        Logger.timer.start();
-        while (Logger.timer.getElapsedTime() < waitTime);
+        Logger.log("Process " + processID + ": start " + op.name + " " + op.typeToToken());
 
-        Logger.log(op.typeToToken() + "{" + op.name + "}" +
-                   op.numCycles + " - " + waitTime + " ms");
+        tempTimer.start();
+        while (tempTimer.getElapsedTime() < waitTime);
+
+        Logger.log("Process " + processID + ": end " + op.name + " " + op.typeToToken());
     }
 }

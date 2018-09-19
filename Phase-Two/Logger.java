@@ -14,7 +14,7 @@ public class Logger
     private static String filePath;
     private static boolean toMonitor,
                            toFile;
-    public static BasicTimer timer;
+    private static BasicTimer masterTimer;
 
 
     /**
@@ -26,7 +26,7 @@ public class Logger
      */
     public static void init() throws FileNotFoundException, IOException
     {
-        timer = new BasicTimer();
+        masterTimer = new BasicTimer();
         fileBuffer = new StringBuffer();
         filePath = new String(Configuration.logFilePath);
 
@@ -47,8 +47,6 @@ public class Logger
         }
         else
             logError("Log type not defined");
-
-        outputConfiguration();
     }
 
     /**
@@ -61,11 +59,21 @@ public class Logger
      */
     public static void log(String msg)
     {
+        int currMS = masterTimer.getElapsedTime();
+
         if (toMonitor)
-            System.out.println(msg);
+            System.out.println(currMS + " (msec) - " + msg);
 
         if (toFile)
-            fileBuffer.append(msg + "\n");
+            fileBuffer.append(currMS + " (msec) - " + msg + "\n");
+    }
+
+    /**
+     * \brief Starts the master timer for the simulation
+     */
+    public static void startMasterTimer()
+    {
+        masterTimer.start();
     }
 
     /**
