@@ -86,7 +86,7 @@ class OperatingSystem
         ProcessControlBlock currPCB = null;
         int appCount = 0;
 
-        if (!metaDataScanner.next().contains("Start Program"))
+        if (!metaDataScanner.next().contains("Start"))
             Logger.logError("Meta data file does not contain start prompt");
 
         while (metaDataScanner.hasNext())

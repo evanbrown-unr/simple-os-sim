@@ -20,24 +20,17 @@ import java.io.IOException;
  */
 enum Option
 {
-    VERSION(0),
-    MDF_PATH(1),
-    PROCESS_TIME(2),
-    MONITOR_TIME(3),
-    HARD_DRIVE_TIME(4),
-    KEYBOARD_TIME(5),
-    SCANNER_TIME(6),
-    PROJECTOR_TIME(7),
-    MEMORY_TIME(8),
-    LOG_TYPE(9),
-    LOG_FILE_PATH(10);
-
-    public final int value;
-
-    Option(int value)
-    {
-        this.value = value;
-    }
+    VERSION,
+    MDF_PATH,
+    PROCESS_TIME,
+    MONITOR_TIME,
+    HARD_DRIVE_TIME,
+    KEYBOARD_TIME,
+    SCANNER_TIME,
+    PROJECTOR_TIME,
+    MEMORY_TIME,
+    LOG_TYPE,
+    LOG_FILE_PATH
 }
 
 /**
@@ -45,16 +38,9 @@ enum Option
  */
 enum LogType
 {
-    MONITOR(0),
-    FILE(1),
-    BOTH(2);
-
-    public final int value;
-
-    LogType(int value)
-    {
-        this.value = value;
-    }
+    MONITOR,
+    FILE,
+    BOTH
 }
 
 
@@ -109,7 +95,12 @@ public class Configuration
         FileInputStream configFile = new FileInputStream(configFilePath);
         Scanner configScan = new Scanner(configFile);
 
-        configScan.nextLine(); // Ignore first line
+        if (!configScan.nextLine().contains("Start"))
+        {
+            System.err.println("ERROR: Configuration file does not contain start prompt\n" +
+                               "Exiting with return code 1");
+            System.exit(1);
+        }
 
         version = extractOption(configScan);
         mdfPath = extractOption(configScan);
