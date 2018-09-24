@@ -5,6 +5,7 @@
  */
 
 import java.util.LinkedList;
+import java.util.Random;
 
 enum State
 {
@@ -140,11 +141,29 @@ class ProcessControlBlock
         BasicTimer tempTimer = new BasicTimer();
         int waitTime = op.numCycles * getCycleTime(op.name);
 
-        Logger.log("Process " + processID + ": start " + op.name + " " + op.typeToToken());
+
+        if (op.name.equals("allocate"))
+            Logger.log("Process " + processID + ": allocating " + op.typeToToken());
+        else
+            Logger.log("Process " + processID + ": start " + op.name + " " + op.typeToToken());
 
         tempTimer.start();
         while (tempTimer.getElapsedTime() < waitTime);
 
-        Logger.log("Process " + processID + ": end " + op.name + " " + op.typeToToken());
+        if (op.name.equals("allocate"))
+            Logger.log("Process " + processID + ":" + op.typeToToken() +
+                       " allocated at " + generateAddress());
+        else
+            Logger.log("Process " + processID + ": end " + op.name + " " + op.typeToToken());
+    }
+
+    /**
+     * \brief Generates a random 32-bit memory address.
+     * \details Used for the allocate operation in PCB.
+     * \return A string containing a 32-bit hex address.
+     */
+    private String generateAddress()
+    {
+        return "0x" + Integer.toHexString(new Random().nextInt()).toUpperCase();
     }
 }
