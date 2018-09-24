@@ -92,34 +92,6 @@ class ProcessControlBlock
     }
 
     /**
-     * \brief Getter for the operation cycle time.
-     */
-    public int getCycleTime(String opName)
-    {
-        switch (opName)
-        {
-            case "run":
-                return Configuration.processorTime;
-            case "hard drive":
-                return Configuration.hardDriveTime;
-            case "keyboard":
-                return Configuration.keyboardTime;
-            case "monitor":
-                return Configuration.monitorTime;
-            case "projector":
-                return Configuration.projectorTime;
-            case "scanner":
-                return Configuration.scannerTime;
-            case "allocate": case "block":
-                return Configuration.memoryTime;
-            case "begin": case "finish":
-                return 0;
-            default:
-                return -1;
-        }
-    }
-
-    /**
      * \brief Adds operation to the end of LinkedList.
      * \param op New operation.
      */
@@ -139,11 +111,13 @@ class ProcessControlBlock
     public final void executeOperation(Operation op)
     {
         BasicTimer tempTimer = new BasicTimer();
-        int waitTime = op.numCycles * getCycleTime(op.name);
+        int waitTime = op.numCycles * Configuration.getCycleTime(op.name);
 
 
         if (op.name.equals("allocate"))
             Logger.log("Process " + processID + ": allocating " + op.typeToToken());
+        else if (op.name.equals("run"))
+            Logger.log("Process " + processID + ": start processing action");
         else
             Logger.log("Process " + processID + ": start " + op.name + " " + op.typeToToken());
 
@@ -151,8 +125,9 @@ class ProcessControlBlock
         while (tempTimer.getElapsedTime() < waitTime);
 
         if (op.name.equals("allocate"))
-            Logger.log("Process " + processID + ": " + op.typeToToken() +
-                       " allocated at " + generateAddress());
+            Logger.log("Process " + processID + ": memory allocated at " + generateAddress());
+        else if (op.name.equals("run"))
+            Logger.log("Process " + processID + ": end processing action");
         else
             Logger.log("Process " + processID + ": end " + op.name + " " + op.typeToToken());
     }
@@ -164,6 +139,6 @@ class ProcessControlBlock
      */
     private String generateAddress()
     {
-        return "0x" + Integer.toHexString(new Random().nextInt()).toUpperCase();
+        return "0x" + Integer.toHexString(new Random().nextInt()+0x10000000).toUpperCase();
     }
 }
