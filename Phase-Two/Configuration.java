@@ -162,4 +162,35 @@ public class Configuration
 
         return option;
     }
+
+    /**
+     * \brief Getter for the operation cycle time.
+     * \detials Uses a switch statement to modularize the method.
+     *          Otherwise, I'd need to override the method for as
+     *          many different cycle times there are.
+     */
+    public static int getCycleTime(String opName)
+    {
+        switch (opName)
+        {
+            case "run":
+                return processorTime;
+            case "hard drive":
+                return hardDriveTime;
+            case "keyboard":
+                return keyboardTime;
+            case "monitor":
+                return monitorTime;
+            case "projector":
+                return projectorTime;
+            case "scanner":
+                return scannerTime;
+            case "allocate": case "block":
+                return memoryTime;
+            case "begin": case "finish":
+                return 0;
+            default:
+                return -1;
+        }
+    }
 }
