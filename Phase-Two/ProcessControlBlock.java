@@ -151,7 +151,7 @@ class ProcessControlBlock
         while (tempTimer.getElapsedTime() < waitTime);
 
         if (op.name.equals("allocate"))
-            Logger.log("Process " + processID + ":" + op.typeToToken() +
+            Logger.log("Process " + processID + ": " + op.typeToToken() +
                        " allocated at " + generateAddress());
         else
             Logger.log("Process " + processID + ": end " + op.name + " " + op.typeToToken());
