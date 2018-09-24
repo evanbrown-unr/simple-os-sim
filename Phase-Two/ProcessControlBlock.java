@@ -139,6 +139,6 @@ class ProcessControlBlock
      */
     private String generateAddress()
     {
-        return "0x" + Integer.toHexString(new Random().nextInt()+0x10000000).toUpperCase();
+        return "0x" + Integer.toHexString(new Random().nextInt()).toUpperCase();
     }
 }
