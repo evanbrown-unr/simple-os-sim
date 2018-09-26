@@ -111,8 +111,7 @@ class ProcessControlBlock
     public final void executeOperation(Operation op)
     {
         BasicTimer tempTimer = new BasicTimer();
-        int waitTime = op.numCycles * Configuration.getCycleTime(op.name);
-
+        double waitTime = (double)(op.numCycles * Configuration.getCycleTime(op.name)) / 1000.0;
 
         if (op.name.equals("allocate"))
             Logger.log("Process " + processID + ": allocating " + op.typeToToken());

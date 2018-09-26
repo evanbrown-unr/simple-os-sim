@@ -59,13 +59,13 @@ public class Logger
      */
     public static void log(String msg)
     {
-        int currMS = masterTimer.getElapsedTime();
+        double timeStamp = masterTimer.getElapsedTime();
 
         if (toMonitor)
-            System.out.println(currMS + " (msec) - " + msg);
+            System.out.println(String.format("%.3f", timeStamp) + " (sec) - " + msg);
 
         if (toFile)
-            fileBuffer.append(currMS + " (msec) - " + msg + "\n");
+            fileBuffer.append(String.format("%.3f", timeStamp) + " (sec) - " + msg + "\n");
     }
 
     /**

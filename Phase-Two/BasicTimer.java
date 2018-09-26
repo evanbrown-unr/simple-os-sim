@@ -1,10 +1,10 @@
 
 /**
  * Basic timer interface for the simulation.
- * Once the timer is started, you can either stop it
- * and then return the elapsed time, or return the elapsed
- * time while the timer still runs. This class can be extended
- * for further functionality.
+ * At first, i implemented it in milliseceonds, but
+ * for phase two we are required to have a floating point
+ * seconds value for our timestamp. So I just added a little
+ * more math and
  */
 
 class BasicTimer
@@ -45,16 +45,17 @@ class BasicTimer
     }
 
     /**
-     * \brief Gives the amount of time elapsed since started (msec).
+     * \brief Gives the amount of time elapsed since started (sec).
      * \detaills If the timer hasn't been stopped then it performs calculation
-     *          based off of that moment.
-     * \return The elapsed time since start was called in msec.
+     *          based off of that moment. Have to perform diviion and explicit
+     *          casting to get the data in seconds.
+     * \return The elapsed time since start was called in seconds.
      */
-    public int getElapsedTime()
+    public double getElapsedTime()
     {
         if (isRunning)
-            return (int)(System.currentTimeMillis() - startTime);
+            return (double)(System.currentTimeMillis() - startTime) / 1000.0;
         else
-            return (int)(stopTime - startTime);
+            return (double)(stopTime - startTime) / 1000.0;
     }
 }
