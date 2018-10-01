@@ -15,8 +15,8 @@ class OperatingSystem
     private boolean isMetaDataLoaded,
                     foundSystemBegin,
                     foundSystemFinish;
-    private final Operation beginOperation = new Operation(OperationType.SYSTEM, "begin", 0),
-                            finishOperation = new Operation(OperationType.SYSTEM, "finish", 0);
+    private final Operation startOperation = new Operation(OperationType.SYSTEM, "start", 0),
+                            endOperation = new Operation(OperationType.SYSTEM, "end", 0);
 
     /**
      * \brief Class constructor.
@@ -35,7 +35,7 @@ class OperatingSystem
         try {
             readMetaData();
         } catch (FileNotFoundException e) {
-            Logger.logError("Meta data file not found");
+            Logger.logError("ERROR: Meta data file not found");
         } catch (IOException e) {
             Logger.logError("IO failed on file " + Configuration.mdfPath);
         }
@@ -94,11 +94,11 @@ class OperatingSystem
             Operation currOperation = getTokens(metaDataScanner);
 
             // Found system begin operation
-            if (currOperation.equals(beginOperation))
+            if (currOperation.equals(startOperation))
                 foundSystemBegin = true;
 
             // Found system finish operation
-            else if (currOperation.equals(finishOperation))
+            else if (currOperation.equals(endOperation))
             {
                 foundSystemFinish = true;
                 break;
@@ -106,12 +106,12 @@ class OperatingSystem
 
             // System begin operation does not exist
             else if (!foundSystemBegin)
-                Logger.logError("Missing OS system begin operation");
+                Logger.logError("Missing OS system start operation");
 
             // Handling application processes
             else if (currOperation.type == OperationType.APP)
             {
-                if (currOperation.name.equals("begin"))
+                if (currOperation.name.equals("start"))
                 {
                     currPCB = new ProcessControlBlock(++appCount, State.NEW);
                     runningQueue.add(currPCB);

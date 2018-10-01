@@ -29,6 +29,9 @@ Obviously, with the nature of Java, the program has a very object oriented appro
 makes it easier to read, debug, and extend.
 
 ## Phase Two
+Please note that for this project the metadata operations for system and application
+processes has been changed from "begin"/"finish" to "start"/"end". The meta data files must
+be in this format or my simulator will throw the appropriate error.
 For this phase we are still scheduling our tasks using FCFS. However, every input/output
 operation must be run on a seperate thread. For now, we are not worrying about thread pooling,
 but it's something to consider in the near future. Another change is that we are setting the process's
