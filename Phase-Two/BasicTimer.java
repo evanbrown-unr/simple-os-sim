@@ -3,8 +3,13 @@
  * Basic timer interface for the simulation.
  * At first, i implemented it in milliseceonds, but
  * for phase two we are required to have a floating point
- * seconds value for our timestamp. So I just added a little
- * more math and
+ * seconds value for our timestamp.
+ * After another refactor, the time is given in nanosecond
+ * increments. The format is still in seconds, but this was done
+ * for project specification, as they wanted microsecond precision
+ * for logging timestamps. I don't necessarily agree, because the
+ * underlying prescalar used for the system timer with nanoTime() is
+ * not for precise.
  */
 
 class BasicTimer
@@ -28,7 +33,7 @@ class BasicTimer
      */
     public void start()
     {
-        startTime = System.currentTimeMillis();
+        startTime = System.nanoTime();
         isRunning = true;
     }
 
@@ -39,7 +44,7 @@ class BasicTimer
     {
         if (isRunning)
         {
-            stopTime = System.currentTimeMillis();
+            stopTime = System.nanoTime();
             isRunning = false;
         }
     }
@@ -54,8 +59,8 @@ class BasicTimer
     public double getElapsedTime()
     {
         if (isRunning)
-            return (double)(System.currentTimeMillis() - startTime) / 1000.0;
+            return (double)(System.nanoTime() - startTime) / 1000000000.0;
         else
-            return (double)(stopTime - startTime) / 1000.0;
+            return (double)(stopTime - startTime) / 1000000000.0;
     }
 }

@@ -134,8 +134,8 @@ class OperatingSystem
                 Logger.logError("Operation is not valid");
         }
 
-        metaDataFile.close();
         metaDataScanner.close();
+        metaDataFile.close();
     }
 
     /**

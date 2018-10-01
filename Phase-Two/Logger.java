@@ -62,10 +62,10 @@ public class Logger
         double timeStamp = masterTimer.getElapsedTime();
 
         if (toMonitor)
-            System.out.println(String.format("%.3f", timeStamp) + " (sec) - " + msg);
+            System.out.println(String.format("%.6f", timeStamp) + " (sec) - " + msg);
 
         if (toFile)
-            fileBuffer.append(String.format("%.3f", timeStamp) + " (sec) - " + msg + "\n");
+            fileBuffer.append(String.format("%.6f", timeStamp) + " (sec) - " + msg + "\n");
     }
 
     /**

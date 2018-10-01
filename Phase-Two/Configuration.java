@@ -133,8 +133,8 @@ public class Configuration
                 System.exit(1);
         }
 
-        configFile.close();
         configScan.close();
+        configFile.close();
     }
 
 
