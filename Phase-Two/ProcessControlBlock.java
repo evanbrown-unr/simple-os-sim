@@ -132,12 +132,16 @@ class ProcessControlBlock
     }
 
     /**
-     * \brief Generates a random 32-bit memory address.
+     * \brief Generates a random memory address.
      * \details Used for the allocate operation in PCB.
-     * \return A string containing a 32-bit hex address.
+     *		This is determined by the max system memory field
+     *		in the configuration file. For example, if given a 
+     *	 	1024 kbytes, then 1024*1000*8 bits exist. Which means
+     *		the address will never be higher than that value
+     * \return A string containing a memory address in hex format.
      */
     private String generateAddress()
     {
-        return "0x" + Integer.toHexString(new Random().nextInt());
+        return "0x" + Integer.toHexString(new Random().nextInt(Configuration.totalSystemMemory * 8000));
     }
 }

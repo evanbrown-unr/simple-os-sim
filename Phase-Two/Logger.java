@@ -115,7 +115,8 @@ public class Logger
             "Hard Drive : " + Configuration.hardDriveTime + " ms/cycle\n" +
             "Keyboard : " + Configuration.keyboardTime + " ms/cycle\n" +
             "Memory : " + Configuration.memoryTime + " ms/cycle\n" +
-            "Projector : " + Configuration.projectorTime + " ms/cycle");
+            "Projector : " + Configuration.projectorTime + " ms/cycle\n" + 
+	    "System memory : " + Configuration.totalSystemMemory + " kbytes");
 
         if (Configuration.logType == LogType.MONITOR)
             log("Logged to : Monitor\n");
