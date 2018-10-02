@@ -54,7 +54,7 @@ public class Configuration
                       scannerTime,
                       projectorTime,
                       memoryTime,
-                      totalSystemMemory;
+                      totalSystemMemoryKB;
     public static String version,
                          mdfPath,
                          logFilePath;
@@ -113,7 +113,7 @@ public class Configuration
         keyboardTime = Integer.parseInt(extractOption(configScan));
         memoryTime = Integer.parseInt(extractOption(configScan));
         projectorTime = Integer.parseInt(extractOption(configScan));
-        totalSystemMemory = Integer.parseInt(extractOption(configScan));
+        totalSystemMemoryKB = Integer.parseInt(extractOption(configScan));
 
         String logTypeString = extractOption(configScan);
         logFilePath = extractOption(configScan);

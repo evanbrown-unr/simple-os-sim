@@ -33,8 +33,8 @@ class BasicTimer
      */
     public void start()
     {
-        startTime = System.nanoTime();
         isRunning = true;
+        startTime = System.nanoTime();
     }
 
     /**
@@ -44,8 +44,8 @@ class BasicTimer
     {
         if (isRunning)
         {
-            stopTime = System.nanoTime();
             isRunning = false;
+            stopTime = System.nanoTime();
         }
     }
 

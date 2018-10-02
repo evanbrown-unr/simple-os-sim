@@ -91,7 +91,7 @@ class OperatingSystem
 
         while (metaDataScanner.hasNext())
         {
-            Operation currOperation = getTokens(metaDataScanner);
+            Operation currOperation = extractOperation(metaDataScanner);
 
             // Found system begin operation
             if (currOperation.equals(startOperation))
@@ -148,7 +148,7 @@ class OperatingSystem
      * \return The operation with fields set to extracted metadata.
                If the end of the file has been reached, then returns null.
      */
-    private Operation getTokens(Scanner metaDataScanner) throws FileNotFoundException, IOException
+    private Operation extractOperation(Scanner metaDataScanner) throws FileNotFoundException, IOException
     {
         String[] tokens = metaDataScanner.next().split("\\{|\\}");
         for (String s : tokens) s.trim();

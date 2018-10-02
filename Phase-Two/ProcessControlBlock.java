@@ -106,7 +106,8 @@ class ProcessControlBlock
      *          then waits for the required amount of time
      *          for cycle(s). The logger stores the operation's elapsed
      *          time in a local variable so the time in both logs
-     *          is consistent.
+     *          is consistent. It is divided by 1000 to get the value in
+     *          seconds.
      */
     public final void executeOperation(Operation op)
     {
@@ -135,13 +136,13 @@ class ProcessControlBlock
      * \brief Generates a random memory address.
      * \details Used for the allocate operation in PCB.
      *		This is determined by the max system memory field
-     *		in the configuration file. For example, if given a 
+     *		in the configuration file. For example, if given a
      *	 	1024 kbytes, then 1024*1000*8 bits exist. Which means
-     *		the address will never be higher than that value
+     *		the address will never be higher than that value.
      * \return A string containing a memory address in hex format.
      */
     private String generateAddress()
     {
-        return "0x" + Integer.toHexString(new Random().nextInt(Configuration.totalSystemMemory * 8000));
+        return "0x" + Integer.toHexString(new Random().nextInt(Configuration.totalSystemMemoryKB * 8000));
     }
 }
