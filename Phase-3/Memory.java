@@ -1,3 +1,8 @@
+/**
+ * Simple memory allocator used in the context of the
+ * simulator. It generates an address counting upword in
+ * increments of 0x80.
+ */
 
 public class Memory
 {
