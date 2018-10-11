@@ -4,14 +4,7 @@ JC = javac
 .java.class:
 	$(JC) $(JFLAGS) $*.java
 
-CLASSES = \
-        OSSim.java \
-        OperatingSystem.java \
-        Operation.java \
-        Configuration.java \
-        Logger.java \
-        ProcessControlBlock.java \
-        BasicTimer.java \
+CLASSES = *.java
 
 default: classes
 
