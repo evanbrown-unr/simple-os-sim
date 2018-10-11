@@ -11,7 +11,7 @@ public class Memory
 
     public static String allocate()
     {
-        if (currMemoryLocation >= availableMemoryBits) return "";
+        if (currMemoryLocation >= availableMemoryBits) return null;
         String hexAddress = String.format("%08x", currMemoryLocation);
         currMemoryLocation += 0x80;
         return "0x" + hexAddress;
