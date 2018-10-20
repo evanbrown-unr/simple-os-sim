@@ -11,7 +11,8 @@ public class Memory
 
     public static String allocate()
     {
-        if (currMemoryLocation >= availableMemoryBits) return null;
+        if (currMemoryLocation >= (availableMemoryBits - 0x80))
+            Logger.logError("Exceeded system memory");
         String hexAddress = String.format("%08x", currMemoryLocation);
         currMemoryLocation += 0x80;
         return "0x" + hexAddress;

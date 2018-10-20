@@ -77,12 +77,11 @@ public class Configuration
         try {
             readConfigFile(configFilePath);
         } catch (FileNotFoundException e) {
-            System.err.println("ERROR: Configuration file not found\n" +
-                               "Exiting with return code 1");
+            System.err.println("Configuration file not found\n" +
+                               "Please enter a valid file path");
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("ERROR: IO failed on file " + configFilePath +
-                               "\nExiting with return code 1");
+            System.err.println("IO failed on file " + configFilePath);
             System.exit(1);
         }
     }
@@ -100,14 +99,12 @@ public class Configuration
 
         if (!configScan.nextLine().contains("Start"))
         {
-            System.err.println("ERROR: Configuration file does not contain start prompt\n" +
-                               "Exiting with return code 1");
+            System.err.println("Configuration file does not contain start prompt");
             System.exit(1);
         }
 
         version = extractOption(configScan);
         mdfPath = extractOption(configScan);
-
         monitorTime = Integer.parseInt(extractOption(configScan));
         processorTime = Integer.parseInt(extractOption(configScan));
         scannerTime = Integer.parseInt(extractOption(configScan));
@@ -118,7 +115,6 @@ public class Configuration
         totalSystemMemoryKB = Integer.parseInt(extractOption(configScan));
         projectorQuantity = Integer.parseInt(extractOption(configScan));
         hardDriveQuantity = Integer.parseInt(extractOption(configScan));
-
         String logTypeString = extractOption(configScan);
         logFilePath = extractOption(configScan);
 
@@ -134,7 +130,7 @@ public class Configuration
                 logType = LogType.FILE;
                 break;
             default:
-                System.err.println("ERROR: Failed to configure log type\n" +
+                System.err.println("Log type is not a valid option\n" +
                                    "Exiting with return code 1");
                 System.exit(1);
         }
@@ -161,8 +157,8 @@ public class Configuration
         try {
             option = configScanner.nextLine().split(":")[1].trim();
         } catch (Exception e) {
-            System.err.println("ERROR: Missing required configuration data\n" +
-                               "Exiting with return code 1");
+            System.err.println("Missing required configuration data.\n" +
+                               "Please check the configuration file.");
             System.exit(1);
         }
 

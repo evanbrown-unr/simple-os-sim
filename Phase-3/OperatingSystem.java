@@ -36,7 +36,7 @@ class OperatingSystem
         try {
             readMetaData();
         } catch (FileNotFoundException e) {
-            Logger.logError("ERROR: Meta data file not found");
+            Logger.logError("Meta data file not found");
         } catch (IOException e) {
             Logger.logError("IO failed on file " + Configuration.mdfPath);
         }
@@ -48,7 +48,7 @@ class OperatingSystem
      *          FCFS sheduling algorithm. This is the most
      *          crucial part of the simulation.
      */
-    public void simulate() throws IOException, InterruptedException
+    public void simulate()
     {
         Logger.startMasterTimer();
         Logger.log("Simulator program starting");
@@ -66,7 +66,7 @@ class OperatingSystem
         }
 
         Logger.log("Simulator program ending");
-        Logger.writeToFile();
+        Logger.writeBufferToFile();
     }
 
     /**

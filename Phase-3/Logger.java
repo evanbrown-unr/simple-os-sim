@@ -24,7 +24,7 @@ public class Logger
      *          This allcates memory to the required objects and sets the configuration.
      *          This classes initialization depends upon the Configuration's initialization.
      */
-    public static void init() throws FileNotFoundException, IOException
+    public static void init()
     {
         masterTimer = new BasicTimer();
         fileBuffer = new StringBuffer();
@@ -81,25 +81,32 @@ public class Logger
      * \details The fileBuffer must be converted to bytes before writing
      *          data to the file.
      */
-    public static void writeToFile() throws FileNotFoundException, IOException
+    public static void writeBufferToFile()
     {
         if (!toFile)
             return;
 
-        FileOutputStream outputFile = new FileOutputStream(filePath);
-        byte[] bytes = fileBuffer.toString().getBytes();
-        outputFile.write(bytes);
-        outputFile.close();
+        try {
+            FileOutputStream outputFile = new FileOutputStream(filePath);
+            byte[] bytes = fileBuffer.toString().getBytes();
+            outputFile.write(bytes);
+            outputFile.close();
+        } catch (FileNotFoundException e) {
+            Logger.logError("File path was not found");
+        } catch (IOException e) {
+            Logger.logError("File stream was interrupted");
+        }
     }
 
     /**
      * \brief Used to log any error that might occur throughout the simulation.
      * \details Flushes to file and exits the program.
      */
-    public static void logError(String errMsg) throws FileNotFoundException, IOException
+    public static void logError(String errMsg)
     {
-        log("ERROR: " + errMsg + "\nExiting with return code 1");
-        writeToFile();
+        log("ERROR: " + errMsg);
+        log("Exiting with return code 1");
+        writeBufferToFile();
         System.exit(1);
     }
 

@@ -5,8 +5,6 @@
  */
 
 import java.util.LinkedList;
-import java.util.Random;
-import java.util.concurrent.Semaphore;
 
 enum State
 {
@@ -44,7 +42,7 @@ class ProcessControlBlock
      *          it executes its job in a different thread.
      *          Otherwise, it executes on main thread.
      */
-    public void run() throws InterruptedException
+    public void run()
     {
         while (!operationQueue.isEmpty())
         {
@@ -65,9 +63,14 @@ class ProcessControlBlock
                     }
                 );
 
-                ioThread.start();
-                ioThread.join();
+                try {
+                    ioThread.start();
+                    ioThread.join();
+                } catch (InterruptedException e) {
+                    Logger.logError("IO thread was interrupted");
+                }
             }
+
 
             else
                 executeOperation(currOperation);
