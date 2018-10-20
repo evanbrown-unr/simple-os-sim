@@ -6,6 +6,7 @@
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 enum State
 {
@@ -52,11 +53,14 @@ class ProcessControlBlock
             if (currOperation.type == OperationType.INPUT ||
                 currOperation.type == OperationType.OUTPUT)
             {
+
                 Thread ioThread = new Thread(new Runnable()
                     {
                         public void run()
                         {
+                            ResourceManager.acquireResource(currOperation);
                             executeOperation(currOperation);
+                            ResourceManager.releaseResource(currOperation);
                         }
                     }
                 );
@@ -118,6 +122,12 @@ class ProcessControlBlock
             Logger.log("Process " + processID + ": allocating " + op.typeToToken());
         else if (op.name.equals("run"))
             Logger.log("Process " + processID + ": start processing action");
+        else if (op.name.equals("projector"))
+            Logger.log("Process " + processID + ": start " + op.name + " " +
+                       op.typeToToken() + " on PROJ " + ResourceManager.getCurrentProjector());
+        else if (op.name.equals("hard drive"))
+            Logger.log("Process " + processID + ": start " + op.name + " " +
+                       op.typeToToken() + " on HDD " + ResourceManager.getCurrentHardDrive());
         else
             Logger.log("Process " + processID + ": start " + op.name + " " + op.typeToToken());
 

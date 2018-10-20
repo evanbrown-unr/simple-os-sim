@@ -27,6 +27,7 @@ class OperatingSystem
     {
         Configuration.init(configFilePath);
         Logger.init();
+        ResourceManager.init();
 
         foundSystemBegin  = false;
         foundSystemFinish = false;
