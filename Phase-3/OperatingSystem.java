@@ -23,7 +23,7 @@ class OperatingSystem
      * \details The meta data is read upon creation.
      *          The status flag is stored in an instance variable.
      */
-    OperatingSystem(String configFilePath) throws FileNotFoundException, IOException
+    OperatingSystem(String configFilePath)
     {
         Configuration.init(configFilePath);
         Logger.init();
@@ -32,41 +32,7 @@ class OperatingSystem
         foundSystemBegin  = false;
         foundSystemFinish = false;
         runningQueue = new LinkedList<ProcessControlBlock>();
-
-        try {
-            readMetaData();
-        } catch (FileNotFoundException e) {
-            Logger.logError("Meta data file not found");
-        } catch (IOException e) {
-            Logger.logError("IO failed on file " + Configuration.mdfPath);
-        }
-    }
-
-    /**
-     * \brief Runs through queue of PCB.
-     * \details For this phase we are doing a simple
-     *          FCFS sheduling algorithm. This is the most
-     *          crucial part of the simulation.
-     */
-    public void simulate()
-    {
-        Logger.startMasterTimer();
-        Logger.log("Simulator program starting");
-
-        while (!runningQueue.isEmpty())
-        {
-            ProcessControlBlock currPCB = runningQueue.poll();
-            Logger.log("OS: preparing process " + currPCB.getProcessID());
-            currPCB.setProcessState(State.READY);
-            Logger.log("OS: starting process " + currPCB.getProcessID());
-            currPCB.setProcessState(State.RUNNING);
-            currPCB.run();
-            Logger.log("OS: removing process " + currPCB.getProcessID());
-            currPCB.setProcessState(State.TERMINATED);
-        }
-
-        Logger.log("Simulator program ending");
-        Logger.writeBufferToFile();
+        readMetaData();
     }
 
     /**
@@ -75,14 +41,19 @@ class OperatingSystem
      *          the file into tokens, each one containing the data
      *          needed to define an operation.
      */
-    public void readMetaData() throws FileNotFoundException, IOException
+    public void readMetaData()
     {
+        FileInputStream metaDataFile = null;
         String filePath = Configuration.mdfPath;
 
         if (filePath.isEmpty())
             Logger.logError("No meta data path found");
 
-        FileInputStream metaDataFile = new FileInputStream(filePath);
+        try {
+            metaDataFile = new FileInputStream(filePath);
+        } catch (FileNotFoundException e) {
+            Logger.logError("Meta data file not found");
+        }
         Scanner metaDataScanner = new Scanner(metaDataFile).useDelimiter("; |;\n|:\n|\\.");
         ProcessControlBlock currPCB = null;
         int appCount = 0;
@@ -135,8 +106,39 @@ class OperatingSystem
                 Logger.logError("Operation is not valid");
         }
 
-        metaDataScanner.close();
-        metaDataFile.close();
+        try {
+            metaDataScanner.close();
+            metaDataFile.close();
+        } catch (IOException e) {
+            Logger.logError("IO failed on " + Configuration.mdfPath);
+        }
+    }
+
+    /**
+     * \brief Runs through queue of PCB.
+     * \details For this phase we are doing a simple
+     *          FCFS sheduling algorithm. This is the most
+     *          crucial part of the simulation.
+     */
+    public void simulate()
+    {
+        Logger.startMasterTimer();
+        Logger.log("Simulator program starting");
+
+        while (!runningQueue.isEmpty())
+        {
+            ProcessControlBlock currPCB = runningQueue.poll();
+            Logger.log("OS: preparing process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.READY);
+            Logger.log("OS: starting process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.RUNNING);
+            currPCB.run();
+            Logger.log("OS: removing process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.TERMINATED);
+        }
+
+        Logger.log("Simulator program ending");
+        Logger.writeBufferToFile();
     }
 
     /**
@@ -149,10 +151,17 @@ class OperatingSystem
      * \return The operation with fields set to extracted metadata.
                If the end of the file has been reached, then returns null.
      */
-    private Operation extractOperation(Scanner metaDataScanner) throws FileNotFoundException, IOException
+    private Operation extractOperation(Scanner metaDataScanner)
     {
-        String[] tokens = metaDataScanner.next().split("\\{|\\}");
-        for (String s : tokens) s.trim();
+        String[] tokens = null;
+
+        try {
+            tokens = metaDataScanner.next().split("\\{|\\}");
+            for (String s : tokens) s.trim();
+        } catch (Exception e) {
+            Logger.logError("Failed to parse meta data operation");
+        }
+
         return new Operation(tokenToType(tokens[0]), tokens[1],
                              Integer.parseInt(tokens[2]));
     }
@@ -162,7 +171,7 @@ class OperatingSystem
      * \token Valid token string.
      * \return The type of operation represented by token.
      */
-    private OperationType tokenToType(String token) throws FileNotFoundException, IOException
+    private OperationType tokenToType(String token)
     {
         if (token.equals("S"))
             return OperationType.SYSTEM;

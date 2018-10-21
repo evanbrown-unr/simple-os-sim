@@ -30,9 +30,9 @@ public class ResourceManager
     }
 
     /**
-     * \brief acquires the next available resource available.
+     * \brief Acquires the next available resource.
      * \details After being acquired, the resource must be released,
-     *          in order to use it again throughout the simulation.
+     *          in order to use it again.
      */
     public static void acquireResource(Operation op)
     {
@@ -51,7 +51,6 @@ public class ResourceManager
 
     /**
      * \brief Releases an acquired resource.
-     * \details
      */
     public static void releaseResource(Operation op)
     {

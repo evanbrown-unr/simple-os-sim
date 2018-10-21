@@ -73,17 +73,7 @@ public class Configuration
         version = new String();
         mdfPath = new String();
         logFilePath = new String();
-
-        try {
-            readConfigFile(configFilePath);
-        } catch (FileNotFoundException e) {
-            System.err.println("Configuration file not found\n" +
-                               "Please enter a valid file path");
-            System.exit(1);
-        } catch (IOException e) {
-            System.err.println("IO failed on file " + configFilePath);
-            System.exit(1);
-        }
+        readConfigFile(configFilePath);
     }
 
     /**
@@ -92,9 +82,16 @@ public class Configuration
      * \details Called in class's initialization method.
      * \param A string containing the configuration file path.
      */
-    private static void readConfigFile(String configFilePath) throws FileNotFoundException, IOException
+    private static void readConfigFile(String configFilePath)
     {
-        FileInputStream configFile = new FileInputStream(configFilePath);
+        FileInputStream configFile = null;
+        try {
+            configFile = new FileInputStream(configFilePath);
+        } catch (FileNotFoundException e) {
+            System.err.println("Configuration file not found\n" +
+                               "Please enter a valid file path");
+            System.exit(1);
+        }
         Scanner configScan = new Scanner(configFile);
 
         if (!configScan.nextLine().contains("Start"))
@@ -135,8 +132,13 @@ public class Configuration
                 System.exit(1);
         }
 
-        configScan.close();
-        configFile.close();
+        try {
+            configScan.close();
+            configFile.close();
+        } catch (IOException e) {
+            System.err.println("IO failed on file " + configFilePath);
+            System.exit(1);
+        }
     }
 
 
