@@ -36,16 +36,20 @@ public class ResourceManager
      */
     public static void acquireResource(Operation op)
     {
-        switch (op.name)
-        {
-            case "projector":
-                projectorLocks[projectorIndex].acquireUninterruptibly();
-                break;
+        try {
+            switch (op.name)
+            {
+                case "projector":
+                    projectorLocks[projectorIndex].acquire();
+                    break;
 
-            case "hard drive":
-                hardDriveLocks[hardDriveIndex].acquireUninterruptibly();
-                break;
-            default:
+                case "hard drive":
+                        hardDriveLocks[hardDriveIndex].acquire();
+                    break;
+                default:
+            }
+        } catch (InterruptedException e) {
+            Logger.logError("IO thread interrupted while executing");
         }
     }
 

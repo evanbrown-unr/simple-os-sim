@@ -10,13 +10,11 @@ class OSSim
 {
     private static final int REQUIRED_ARGS = 1;
 
-    public static void main(String[] args) throws FileNotFoundException, IOException,
-                                                  InterruptedException
+    public static void main(String[] args)
     {
         if (args.length != REQUIRED_ARGS)
         {
-            System.err.println("ERROR: Must supply configuration file\n" +
-                               "Exiting with return code 1");
+            System.err.println("Must supply configuration file as command line argument");
             System.exit(1);
         }
 

@@ -105,7 +105,7 @@ public class Logger
     public static void logError(String errMsg)
     {
         log("ERROR: " + errMsg);
-        log("Exiting with return code 1");
+        log("ERROR: Exiting with return code 1");
         writeBufferToFile();
         System.exit(1);
     }
