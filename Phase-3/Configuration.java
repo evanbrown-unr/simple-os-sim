@@ -29,6 +29,8 @@ enum Option
     SCANNER_TIME,
     PROJECTOR_TIME,
     MEMORY_TIME,
+    MEMORY_TOTAL,
+    MEMORY_BLOCK,
     LOG_TYPE,
     LOG_FILE_PATH
 }
@@ -55,6 +57,7 @@ public class Configuration
                       projectorTime,
                       memoryTime,
                       totalSystemMemoryKB,
+                      memoryBlockSize,
                       projectorQuantity,
                       hardDriveQuantity;
     public static String version,
@@ -102,14 +105,15 @@ public class Configuration
 
         version = extractOption(configScan);
         mdfPath = extractOption(configScan);
-        monitorTime = Integer.parseInt(extractOption(configScan));
         processorTime = Integer.parseInt(extractOption(configScan));
-        scannerTime = Integer.parseInt(extractOption(configScan));
+        monitorTime = Integer.parseInt(extractOption(configScan));
         hardDriveTime = Integer.parseInt(extractOption(configScan));
+        projectorTime = Integer.parseInt(extractOption(configScan));
         keyboardTime = Integer.parseInt(extractOption(configScan));
         memoryTime = Integer.parseInt(extractOption(configScan));
-        projectorTime = Integer.parseInt(extractOption(configScan));
+        scannerTime = Integer.parseInt(extractOption(configScan));
         totalSystemMemoryKB = Integer.parseInt(extractOption(configScan));
+        memoryBlockSize = Integer.parseInt(extractOption(configScan));
         projectorQuantity = Integer.parseInt(extractOption(configScan));
         hardDriveQuantity = Integer.parseInt(extractOption(configScan));
         String logTypeString = extractOption(configScan);

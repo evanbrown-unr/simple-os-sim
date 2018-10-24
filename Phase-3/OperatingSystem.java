@@ -15,8 +15,8 @@ class OperatingSystem
     private boolean isMetaDataLoaded,
                     foundSystemBegin,
                     foundSystemFinish;
-    private final Operation startOperation = new Operation(OperationType.SYSTEM, "start", 0),
-                            endOperation = new Operation(OperationType.SYSTEM, "end", 0);
+    private final Operation beginOperation = new Operation(OperationType.SYSTEM, "begin", 0),
+                            finishOperation = new Operation(OperationType.SYSTEM, "finish", 0);
 
     /**
      * \brief Class constructor.
@@ -66,11 +66,11 @@ class OperatingSystem
             Operation currOperation = extractOperation(metaDataScanner);
 
             // Found system begin operation
-            if (currOperation.equals(startOperation))
+            if (currOperation.equals(beginOperation))
                 foundSystemBegin = true;
 
             // Found system finish operation
-            else if (currOperation.equals(endOperation))
+            else if (currOperation.equals(finishOperation))
             {
                 foundSystemFinish = true;
                 break;
@@ -83,7 +83,7 @@ class OperatingSystem
             // Handling application processes
             else if (currOperation.type == OperationType.APP)
             {
-                if (currOperation.name.equals("start"))
+                if (currOperation.name.equals("begin"))
                 {
                     currPCB = new ProcessControlBlock(++appCount, State.NEW);
                     runningQueue.add(currPCB);
