@@ -3,7 +3,10 @@
  * simulation's access to hardware resources by defining a critical section
  * with the use of semaphore locks. This is definitely not an ideal algorithm, and
  * works best on simulations that run sequentially and do not perform time slicing.
- * I am planning on refactoring this module for the next phase.
+ * I am planning on refactoring this module for the next phase. So far the only hardware
+ * devices that are implemented are projectors and hard drives. Monitors and keyboards are
+ * accounted for but no locking is done for them. This is in order to account for error handling
+ * when the operation passed in doesn't have a valid resource name.
  */
 
 import java.util.concurrent.Semaphore;
@@ -36,20 +39,29 @@ public class ResourceManager
      */
     public static void acquireResource(Operation op)
     {
-        try {
-            switch (op.name)
-            {
-                case "projector":
+        switch (op.name)
+        {
+            case "projector":
+                try {
                     projectorLocks[projectorIndex].acquire();
-                    break;
+                } catch (InterruptedException e) {
+                    Logger.logError("Projector thread interrupted");
+                }
+                break;
 
-                case "hard drive":
-                        hardDriveLocks[hardDriveIndex].acquire();
-                    break;
-                default:
-            }
-        } catch (InterruptedException e) {
-            Logger.logError("IO thread interrupted while executing");
+            case "hard drive":
+                try {
+                    hardDriveLocks[hardDriveIndex].acquire();
+                } catch (InterruptedException e) {
+                    Logger.logError("Hard drive thread interrupted");
+                }
+                break;
+
+            case "keyboard": break;
+            case "monitor": break;
+
+            default:
+                Logger.logError("Operation not valid, unable to acquire resource");
         }
     }
 
@@ -73,7 +85,12 @@ public class ResourceManager
                     hardDriveIndex = 0;
                 else hardDriveIndex++;
                 break;
+
+            case "keyboard": break;
+            case "monitor": break;
+
             default:
+                Logger.logError("Operation not valid, unable to release resouce");
         }
     }
 
