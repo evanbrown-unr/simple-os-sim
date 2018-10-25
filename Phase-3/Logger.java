@@ -123,7 +123,8 @@ public class Logger
             "Keyboard : " + Configuration.keyboardTime + " ms/cycle\n" +
             "Memory : " + Configuration.memoryTime + " ms/cycle\n" +
             "Projector : " + Configuration.projectorTime + " ms/cycle\n" +
-	    "System memory : " + Configuration.totalSystemMemoryKB + " kbytes");
+	        "System memory : " + Configuration.totalSystemMemoryKB + " kbytes\n" +
+            "Block size : " + Configuration.memoryBlockSize + " bits");
 
         if (Configuration.logType == LogType.MONITOR)
             log("Logged to : Monitor\n");

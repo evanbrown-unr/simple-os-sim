@@ -15,25 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-/**
- * \brief Enumeration to represent the different config options.
- */
-enum Option
-{
-    VERSION,
-    MDF_PATH,
-    PROCESS_TIME,
-    MONITOR_TIME,
-    HARD_DRIVE_TIME,
-    KEYBOARD_TIME,
-    SCANNER_TIME,
-    PROJECTOR_TIME,
-    MEMORY_TIME,
-    MEMORY_TOTAL,
-    MEMORY_BLOCK,
-    LOG_TYPE,
-    LOG_FILE_PATH
-}
 
 /**
  * \brief Enumeration to represent log type outputs.
@@ -44,7 +25,6 @@ enum LogType
     FILE,
     BOTH
 }
-
 
 
 public class Configuration

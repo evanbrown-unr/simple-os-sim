@@ -1,4 +1,3 @@
-
 /**
  * \brief Enumeration to abstract type of operation.
  */
@@ -11,7 +10,6 @@ enum OperationType
     OUTPUT,
     MEMORY;
 }
-
 
 
 /**

@@ -45,7 +45,7 @@ public class ResourceManager
                 try {
                     projectorLocks[projectorIndex].acquire();
                 } catch (InterruptedException e) {
-                    Logger.logError("Projector thread interrupted");
+                    Logger.logError("Projector operation interrupted");
                 }
                 break;
 
@@ -53,7 +53,7 @@ public class ResourceManager
                 try {
                     hardDriveLocks[hardDriveIndex].acquire();
                 } catch (InterruptedException e) {
-                    Logger.logError("Hard drive thread interrupted");
+                    Logger.logError("Hard drive operation interrupted");
                 }
                 break;
 

@@ -7,13 +7,13 @@
 
 public class Memory
 {
-    private static int availableMemoryBits = Configuration.totalSystemMemoryKB * 1000 * 8;
+    private static int availableMemoryBits = Configuration.totalSystemMemoryKB * 8000;
     private static int blockSize = Configuration.memoryBlockSize;
     private static int currMemoryLocation = 0x0;
 
     public static String allocate()
     {
-        if (currMemoryLocation >= (availableMemoryBits - blockSize))
+        if (currMemoryLocation > (availableMemoryBits - blockSize))
             Logger.logError("Exceeded system memory");
         String hexAddress = String.format("%08x", currMemoryLocation);
         currMemoryLocation += blockSize;
