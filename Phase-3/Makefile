@@ -12,7 +12,7 @@ CLASSES = OSSim.java \
 		  Operation.java \
 		  Memory.java \
 		  ResourceManager.java \
-		  BasicTimer.java
+		  Timer.java
 
 default: classes
 

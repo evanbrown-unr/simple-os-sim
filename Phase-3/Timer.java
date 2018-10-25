@@ -12,7 +12,7 @@
  * not for precise.
  */
 
-class BasicTimer
+class Timer
 {
     private long startTime;
     private long stopTime;
@@ -21,7 +21,7 @@ class BasicTimer
     /**
      * \brief Timer constructor.
      */
-    BasicTimer()
+    Timer()
     {
         startTime = 0;
         stopTime = 0;
