@@ -38,11 +38,6 @@ class ProcessControlBlock implements Comparable<ProcessControlBlock>
         this.operationQueue = new PriorityQueue<Operation>(100);
     }
 
-    public int compareTo(ProcessControlBlock other)
-    {
-        return priority - other.priority;
-    }
-
     /**
      * \brief Runs the PCB's operation queue.
      * \details If there is an IO operation in the queue,
@@ -150,5 +145,17 @@ class ProcessControlBlock implements Comparable<ProcessControlBlock>
             Logger.log("Process " + processID + ": end processing action");
         else
             Logger.log("Process " + processID + ": end " + op.name + " " + op.typeToToken());
+    }
+
+    /**
+     * \brief Compares the priority of PCBs.
+     * \param other The PCB this is being compared to.
+     * \return If positive then this is greater priority.
+     *         If negative then other is greater priority.
+     *         If zero then they're equal priority.
+     */
+    public int compareTo(ProcessControlBlock other)
+    {
+        return other.priority - priority;
     }
 }

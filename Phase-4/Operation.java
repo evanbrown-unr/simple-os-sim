@@ -37,11 +37,6 @@ class Operation implements Comparable<Operation>
         this.numCycles = numCycles;
     }
 
-    public int compareTo(Operation other)
-    {
-        return priority - other.priority;
-    }
-
     /**
      * \brief Returns object's type as a string.
      * \return Type in string format.
@@ -68,8 +63,21 @@ class Operation implements Comparable<Operation>
     }
 
     /**
+     * \brief Compares the priority of PCB operations.
+     * \param other The PCB operation this is being compared to.
+     * \return If positive then this is greater priority.
+     *         If negative then other is greater priority.
+     *         If zero then they're equal priority.
+     */
+    public int compareTo(Operation other)
+    {
+        return other.priority - priority;
+    }
+
+    /**
      * \brief Overriden to compare Operation objects.
      * \param other Operation that reference is being compared to.
+     * \return True if equal, otherwise false.
      */
     public boolean equals(Operation other)
     {
