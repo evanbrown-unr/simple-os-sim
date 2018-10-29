@@ -11,7 +11,7 @@ CLASSES = \
         Configuration.java \
         Logger.java \
         ProcessControlBlock.java \
-        BasicTimer.java \
+        Timer.java \
 
 default: classes
 

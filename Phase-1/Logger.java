@@ -14,7 +14,7 @@ public class Logger
     private static String filePath;
     private static boolean toMonitor,
                            toFile;
-    public static BasicTimer timer;
+    public static Timer timer;
 
 
     /**
@@ -26,7 +26,7 @@ public class Logger
      */
     public static void init() throws FileNotFoundException, IOException
     {
-        timer = new BasicTimer();
+        timer = new Timer();
         fileBuffer = new StringBuffer();
         filePath = new String(Configuration.logFilePath);
 

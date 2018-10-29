@@ -113,10 +113,11 @@ class ProcessControlBlock
      */
     public final void executeOperation(Operation op)
     {
+        Timer tempTimer = new Timer();
         int waitTime = op.numCycles * getCycleTime(op.name);
 
-        Logger.timer.start();
-        while (Logger.timer.getElapsedTime() < waitTime);
+        tempTimer.start();
+        while (tempTimer.getElapsedTime() < waitTime);
 
         Logger.log(op.typeToToken() + "{" + op.name + "}" +
                    op.numCycles + " - " + waitTime + " ms");

@@ -12,7 +12,7 @@
  * not for precise.
  */
 
-class BasicTimer
+class Timer
 {
     private long startTime;
     private long stopTime;
@@ -21,7 +21,7 @@ class BasicTimer
     /**
      * \brief Timer constructor.
      */
-    BasicTimer()
+    Timer()
     {
         startTime = 0;
         stopTime = 0;
@@ -34,7 +34,7 @@ class BasicTimer
     public void start()
     {
         isRunning = true;
-        startTime = System.nanoTime();
+        startTime = System.currentTimeMillis();
     }
 
     /**
@@ -45,7 +45,7 @@ class BasicTimer
         if (isRunning)
         {
             isRunning = false;
-            stopTime = System.nanoTime();
+            stopTime = System.currentTimeMillis();
         }
     }
 
@@ -56,11 +56,11 @@ class BasicTimer
      *          casting to get the data in seconds.
      * \return The elapsed time since start was called in seconds.
      */
-    public double getElapsedTime()
+    public int getElapsedTime()
     {
         if (isRunning)
-            return (double)(System.nanoTime() - startTime) / 1000000000.0;
+            return (int)(System.currentTimeMillis() - startTime);
         else
-            return (double)(stopTime - startTime) / 1000000000.0;
+            return (int)(stopTime - startTime);
     }
 }
