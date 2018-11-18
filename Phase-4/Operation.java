@@ -17,9 +17,8 @@ enum OperationType
  * performed by the CPU. For this phase there are six:
  * system, application, process, input, output, memory.
  */
-class Operation implements Comparable<Operation>
+class Operation
 {
-    public int priority;
     public OperationType type;
     public String name;
     public int numCycles;
@@ -60,18 +59,6 @@ class Operation implements Comparable<Operation>
             default:
                 return null;
         }
-    }
-
-    /**
-     * \brief Compares the priority of PCB operations.
-     * \param other The PCB operation this is being compared to.
-     * \return If positive then this is greater priority.
-     *         If negative then other is greater priority.
-     *         If zero then they're equal priority.
-     */
-    public int compareTo(Operation other)
-    {
-        return other.priority - priority;
     }
 
     /**

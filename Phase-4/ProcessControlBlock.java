@@ -4,8 +4,12 @@
  * by the CPU.
  */
 
-import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.LinkedList;
 
+/**
+ * \brief Enumeration to represent process states.
+ */
 enum State
 {
     NEW,
@@ -18,9 +22,10 @@ enum State
 class ProcessControlBlock implements Comparable<ProcessControlBlock>
 {
     private int processID;
-    private int priority;
+    private int numIO;
+    private int numOperations;
     private State processState;
-    private PriorityQueue<Operation> operationQueue;
+    private Queue<Operation> operationQueue;
 
     /**
      * \brief ProcessControlBloack constructor
@@ -30,12 +35,11 @@ class ProcessControlBlock implements Comparable<ProcessControlBlock>
      * \param processName Name of new PCB
      * \param operationQueue LinkedList of all operations
      */
-    ProcessControlBlock(int processID, int priority, State processState)
+    ProcessControlBlock(int processID, State processState)
     {
         this.processID = processID;
-        this.priority = priority;
         this.processState = processState;
-        this.operationQueue = new PriorityQueue<Operation>(100);
+        this.operationQueue = new LinkedList<Operation>();
     }
 
     /**
@@ -95,9 +99,28 @@ class ProcessControlBlock implements Comparable<ProcessControlBlock>
         return processState;
     }
 
+    /**
+     * \brief Setter for process state.
+     */
     public void setProcessState(State processState)
     {
         this.processState = processState;
+    }
+
+    /**
+     * \brief Increments number of IO operations.
+     */
+    public void incrementNumIO()
+    {
+        numIO++;
+    }
+
+    /**
+     * \brief Increments total number of operations.
+     */
+    public void incrementNumOperations()
+    {
+        numOperations++;
     }
 
     /**
@@ -148,14 +171,14 @@ class ProcessControlBlock implements Comparable<ProcessControlBlock>
     }
 
     /**
-     * \brief Compares the priority of PCBs.
-     * \param other The PCB this is being compared to.
-     * \return If positive then this is greater priority.
-     *         If negative then other is greater priority.
-     *         If zero then they're equal priority.
+     * \brief Used to determine ordering for the priority queues.
      */
     public int compareTo(ProcessControlBlock other)
     {
-        return other.priority - priority;
+        if (Configuration.scheduleType == ScheduleType.PS)
+            return other.numIO - this.numIO;
+        else if (Configuration.scheduleType == ScheduleType.SJF)
+            return this.numOperations - other.numOperations;
+        else return 0;
     }
 }

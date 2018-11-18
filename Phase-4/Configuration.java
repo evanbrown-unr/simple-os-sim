@@ -26,10 +26,21 @@ enum LogType
     BOTH
 }
 
+/**
+ * \brief Enumeration to represent different scheduling algorithms
+ */
+enum ScheduleType
+{
+    FCFS,
+    SJF,
+    PS
+}
+
 
 public class Configuration
 {
     public static int processorTime,
+                      processorQuantumNum,
                       monitorTime,
                       hardDriveTime,
                       keyboardTime,
@@ -44,6 +55,7 @@ public class Configuration
                          mdfPath,
                          logFilePath;
     public static LogType logType;
+    public static ScheduleType scheduleType;
 
     /**
      * \brief Initializes the configuration settings and reads the config file.
@@ -85,6 +97,8 @@ public class Configuration
 
         version = extractOption(configScan);
         mdfPath = extractOption(configScan);
+        processorQuantumNum = Integer.parseInt(extractOption(configScan));
+        String scheduleTypeString = extractOption(configScan);
         processorTime = Integer.parseInt(extractOption(configScan));
         monitorTime = Integer.parseInt(extractOption(configScan));
         hardDriveTime = Integer.parseInt(extractOption(configScan));
@@ -98,6 +112,23 @@ public class Configuration
         hardDriveQuantity = Integer.parseInt(extractOption(configScan));
         String logTypeString = extractOption(configScan);
         logFilePath = extractOption(configScan);
+
+        switch (scheduleTypeString.toLowerCase())
+        {
+            case "fifo":
+                scheduleType = ScheduleType.FCFS;
+                break;
+            case "sjf":
+                scheduleType = ScheduleType.SJF;
+                break;
+            case "ps":
+                scheduleType = ScheduleType.PS;
+                break;
+            default:
+                System.err.println("Schedule type is not a valid option\n" +
+                                   "Exiting with return code 1");
+                System.exit(1);
+        }
 
         switch (logTypeString.toLowerCase())
         {

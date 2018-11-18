@@ -4,6 +4,8 @@
  */
 
 import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,7 +13,8 @@ import java.io.IOException;
 
 class OperatingSystem
 {
-    private PriorityQueue<ProcessControlBlock> runningQueue;
+    private PriorityQueue<ProcessControlBlock> priorityQueue; // used for PS and SJF
+    private Queue<ProcessControlBlock> fifoQueue;
     private boolean isMetaDataLoaded,
                     foundSystemBegin,
                     foundSystemFinish;
@@ -31,7 +34,8 @@ class OperatingSystem
 
         foundSystemBegin  = false;
         foundSystemFinish = false;
-        runningQueue = new PriorityQueue<ProcessControlBlock>(100);
+        priorityQueue = new PriorityQueue<ProcessControlBlock>(100);
+        fifoQueue = new LinkedList<ProcessControlBlock>();
         readMetaData();
     }
 
@@ -85,8 +89,16 @@ class OperatingSystem
             {
                 if (currOperation.name.equals("begin"))
                 {
-                    currPCB = new ProcessControlBlock(++appCount, 0, State.NEW);
-                    runningQueue.add(currPCB);
+                    currPCB = new ProcessControlBlock(++appCount, State.NEW);
+                }
+
+                else if (currOperation.name.equals("finish"))
+                {
+                    if (Configuration.scheduleType == ScheduleType.FCFS)
+                        fifoQueue.add(currPCB);
+                    else if (Configuration.scheduleType == ScheduleType.PS ||
+                             Configuration.scheduleType == ScheduleType.SJF)
+                        priorityQueue.add(currPCB);
                 }
             }
 
@@ -98,6 +110,12 @@ class OperatingSystem
             {
                 if (currPCB == null)
                     Logger.logError("No application created for current operations");
+
+                if (currOperation.type == OperationType.INPUT ||
+                    currOperation.type == OperationType.OUTPUT)
+                        currPCB.incrementNumIO();
+
+                currPCB.incrementNumOperations();
 
                 currPCB.addOperation(currOperation);
             }
@@ -115,19 +133,16 @@ class OperatingSystem
     }
 
     /**
-     * \brief Runs through queue of PCB.
-     * \details For this phase we are doing a simple
-     *          FCFS sheduling algorithm. This is the most
-     *          crucial part of the simulation.
+     * \brief Simulates first come first serve scheduling algorithm.
      */
-    public void simulate()
+    public void simulateFCFS()
     {
         Logger.startMasterTimer();
         Logger.log("Simulator program starting");
 
-        while (!runningQueue.isEmpty())
+        while (!fifoQueue.isEmpty())
         {
-            ProcessControlBlock currPCB = runningQueue.poll();
+            ProcessControlBlock currPCB = fifoQueue.poll();
             Logger.log("OS: preparing process " + currPCB.getProcessID());
             currPCB.setProcessState(State.READY);
             Logger.log("OS: starting process " + currPCB.getProcessID());
@@ -139,6 +154,42 @@ class OperatingSystem
 
         Logger.log("Simulator program ending");
         Logger.writeBufferToFile();
+    }
+
+    /**
+     * \brief Simulates the algorithms that utilize a priority queue.
+     */
+    public void simulatePriority()
+    {
+        Logger.startMasterTimer();
+        Logger.log("Simulator program starting");
+
+        while (!priorityQueue.isEmpty())
+        {
+            ProcessControlBlock currPCB = priorityQueue.poll();
+            Logger.log("OS: preparing process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.READY);
+            Logger.log("OS: starting process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.RUNNING);
+            currPCB.run();
+            Logger.log("OS: removing process " + currPCB.getProcessID());
+            currPCB.setProcessState(State.TERMINATED);
+        }
+
+        Logger.log("Simulator program ending");
+        Logger.writeBufferToFile();
+    }
+
+    /**
+     * \brief Wraps the functionality of both simulations into a single method.
+     */
+    public void simulate()
+    {
+        if (Configuration.scheduleType == ScheduleType.FCFS)
+            simulateFCFS();
+        else if (Configuration.scheduleType == ScheduleType.SJF ||
+                 Configuration.scheduleType == ScheduleType.PS)
+            simulatePriority();
     }
 
     /**
