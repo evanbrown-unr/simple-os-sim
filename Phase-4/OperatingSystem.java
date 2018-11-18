@@ -150,7 +150,6 @@ class OperatingSystem
             currPCB.run();
             Logger.log("OS: removing process " + currPCB.getProcessID());
             currPCB.setProcessState(State.TERMINATED);
-            Memory.free();
         }
 
         Logger.log("Simulator program ending");
@@ -175,7 +174,6 @@ class OperatingSystem
             currPCB.run();
             Logger.log("OS: removing process " + currPCB.getProcessID());
             currPCB.setProcessState(State.TERMINATED);
-            Memory.free();
         }
 
         Logger.log("Simulator program ending");

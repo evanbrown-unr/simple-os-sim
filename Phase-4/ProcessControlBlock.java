@@ -81,6 +81,8 @@ class ProcessControlBlock implements Comparable<ProcessControlBlock>
             else
                 executeOperation(currOperation);
         }
+
+        Memory.free();
     }
 
     /**
