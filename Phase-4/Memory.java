@@ -26,4 +26,9 @@ public class Memory
         currMemoryLocation += blockSize;
         return "0x" + hexAddress;
     }
+
+    public static void free()
+    {
+        currMemoryLocation = 0x0;
+    }
 }

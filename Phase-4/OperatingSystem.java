@@ -150,6 +150,7 @@ class OperatingSystem
             currPCB.run();
             Logger.log("OS: removing process " + currPCB.getProcessID());
             currPCB.setProcessState(State.TERMINATED);
+            Memory.free();
         }
 
         Logger.log("Simulator program ending");
@@ -174,6 +175,7 @@ class OperatingSystem
             currPCB.run();
             Logger.log("OS: removing process " + currPCB.getProcessID());
             currPCB.setProcessState(State.TERMINATED);
+            Memory.free();
         }
 
         Logger.log("Simulator program ending");
@@ -200,7 +202,7 @@ class OperatingSystem
      * \param metaDataScanner Scanner that's tied to the meta data file.
      * \param op The operation object that will store the extracted tokens.
      * \return The operation with fields set to extracted metadata.
-               If the end of the file has been reached, then returns null.
+     *         If the end of the file has been reached, then returns null.
      */
     private Operation extractOperation(Scanner metaDataScanner)
     {
