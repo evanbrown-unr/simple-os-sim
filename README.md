@@ -1,5 +1,4 @@
-# Operating System Simulator Project
-# CS 446 UNR Coursework
+# Simple Operating System Simulator
 # Evan Brown
 
 ## Repository Description
@@ -17,10 +16,12 @@ sudo apt-get install default-jdk
 ```bash
 make
 ```
+
 ### Running
 ```bash
 java OSSim <filepath>.conf
 ```
+
 ## Phase Descriptions
 
 ### Phase 1
