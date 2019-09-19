@@ -2,7 +2,7 @@
 # Evan Brown
 
 ## Repository Description
-This repository contains the simulation projects for CS 446 at UNR. The code has been slightly refactored overtime, but retains the overall structure. There will be four phases, each of which building off of the preceeding phase. The essence of all of the phases is that a configuration file is read it to set up the simulator. Then a metadata file is read to set up the PCBs within the OS queues. After that, the process is ran with all processes/operations being logged to the monitor and/or a logfile.
+This repository contains the simulation projects for CS 446 at UNR. The code has been slightly refactored overtime, but retains the overall structure. There will be four phases, each of which building off of the preceeding phase. The essence of all of the phases is that a configuration file is read in to set up the simulator. Then a metadata file is read to set up the PCBs within the OS queues. After that, the process is ran with all processes/operations being logged to the monitor and/or a logfile.
 
 ## Dependency Instructions
 
